@@ -28,8 +28,33 @@
   <input type="file" id="excel-file" style="display: none" />
   <div class="subarea-box">
     当前浏览器是否存有相关数据：{{hasData?'是':'否'}}
-    <div class="btn" @click="clickImportFile()">导入Excel</div>
+    <div class="btn" style="height: 30px;margin: 5px 0" @click="clickImportFile()">
+      {{able2Import?'导入Excel':'如需再次导入请刷新页面'}}
+    </div>
+    <div class="btn" style="height: 30px;margin: 5px 0" @click="storeData2Local()">
+      {{able2StoreData?'覆写浏览器存储':'如需再次覆写请刷新页面'}}
+    </div>
+    <div class="btn" style="height: 30px;margin: 5px 0;background: red" @click="openRemoveWin()">
+      清除浏览器存储 !!慎重!!
+    </div>
   </div>
+
+  <transition name="showMask">
+    <div class="popup-bg" v-if="popupFlag.removeWin" @click="closeRemoveWin()">
+      <div class="dialog-win" @click.stop>
+        <div class="upper-box">
+          <div class="text">即将清除浏览器中存储的数据</div>
+          <div class="text">在下次导入excel之前 网页将毫无用处</div>
+          <div class="text">确认清除请输入密码</div>
+        </div>
+        <input style="margin-bottom: 20px" v-model="inputRemoveCode" placeholder="请输入密码">
+        <div class="lower-box">
+          <div class="btn cancel-btn" @click="closeRemoveWin()">取消</div>
+          <div class="btn confirm-btn" @click="removeStorage()">确定</div>
+        </div>
+      </div>
+    </div>
+  </transition>
 </div>
 </body>
 

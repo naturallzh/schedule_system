@@ -1,19 +1,57 @@
 [v-cloak] {
   display: none; }
 
+div, span, p {
+  user-select: none; }
+
 .btn {
   border: 1px solid black;
   padding: 1px 2px;
   font-size: 15px;
   display: flex;
   align-items: center;
-  justify-content: center; }
+  justify-content: center;
+  box-sizing: border-box; }
 
 .btn:hover {
   background: black;
   color: white;
   box-shadow: rgba(255, 0, 0, 0.6) 0 0 10px;
   transition: all 0.3s; }
+
+.popup-bg {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+
+.dialog-win {
+  min-width: 300px;
+  padding: 20px;
+  background: white;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center; }
+  .dialog-win .upper-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px; }
+    .dialog-win .upper-box .text {
+      margin-bottom: 5px; }
+  .dialog-win .lower-box {
+    width: 100%;
+    display: flex; }
+    .dialog-win .lower-box .cancel-btn {
+      width: 50%; }
+    .dialog-win .lower-box .confirm-btn {
+      width: 50%; }
 
 .loadingMask {
   width: 100%;
