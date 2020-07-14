@@ -10,6 +10,7 @@ let vm = new Vue({
 		veriRemoveCode: 'jizhideadou1991',	// 清除密码
 
 		popupFlag: {
+			importWin: false,
 			removeWin: false,
 		},
 
@@ -89,18 +90,17 @@ let vm = new Vue({
 				localStorage.setItem('dataArr', dataArr);
 				this.hasData = true;
 				console.log('覆写浏览器存储成功 localStorage[0].stuName: ' + this.dataArr[0].学生姓名)
+				this.closeImportWin();
 				alert('覆写浏览器存储成功');
 			}
     	this.able2StoreData = false;
 		},
 
-		openRemoveWin: function () {
-    	this.popupFlag.removeWin = true;
-		},
+		openRemoveWin: function () {this.popupFlag.removeWin = true;},
+		closeRemoveWin: function () {this.popupFlag.removeWin = false;},
 
-		closeRemoveWin: function () {
-			this.popupFlag.removeWin = false;
-		},
+		openImportWin: function () {this.popupFlag.importWin = true;},
+		closeImportWin: function () {this.popupFlag.importWin = false;},
 
 		removeStorage: function () {
     	if (this.inputRemoveCode === this.veriRemoveCode) {
