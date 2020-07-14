@@ -1,2 +1,89 @@
 // 使得DOM中利用vue变量动态显示的变量在渲染成功之前不显示，否则会短暂闪过{{XXXXX}}
 [v-cloak] {display: none;}
+
+.btn {
+	border: 1px solid black;
+	padding: 1px 2px;
+	font-size: 15px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.btn:hover {
+	background: black;
+	color: white;
+	box-shadow: rgba(255, 0, 0, 0.6) 0 0 10px;
+	transition: all 0.3s;
+}
+
+.loadingMask {
+	width: 100%;
+	height: 100%;
+	background: rgb(135, 135, 135);
+	position: fixed;left: 0;top: 0;
+	z-index: 999;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	color: white;
+	.circle-image-1 {
+		width: 25%;
+		height: 0;
+		padding-bottom: 25%;
+		position: absolute;
+		background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.8));
+		border-radius: 50%;
+		animation-name: loadingCircle;
+		animation-duration: 5s;
+		animation-iteration-count: infinite;
+	}
+	.circle-image-2 {
+		width: 20%;
+		height: 0;
+		padding-bottom: 20%;
+		position: absolute;
+		background: rgb(135, 135, 135);
+		border-radius: 50%;
+	}
+	.title {
+		font-size: 200%;
+		margin-bottom: 20px;
+		position: relative;
+		.dot-1, .dot-2, .dot-3 {
+			position: relative;
+			animation-name: dotJumping;
+			animation-duration: 2s;
+			animation-iteration-count: infinite;
+		}
+		.dot-2 {
+			animation-delay: 400ms;
+		}
+		.dot-3 {
+			animation-delay: 800ms;
+		}
+	}
+	.desc {
+		position: relative;
+	}
+}
+
+@keyframes loadingCircle {
+	from {transform: rotate(0)}
+	to {transform: rotate(360deg)}
+}
+
+@keyframes dotJumping {
+	from {top: 0}
+	30% {top: -10px}
+	60% {top: 0}
+	to {top: 0}
+}
+
+.showMask-enter-active, .showMask-leave-active {
+	transition: all 0.5s;
+}
+.showMask-enter, .showMask-leave-to {
+	//height: 40%;
+	opacity: 0;
+}

@@ -4,6 +4,8 @@ let vm = new Vue({
 		loadingMask: true,
 
   	hasData: false,
+
+		dataArr: [],
   },
 
   beforeCreate () {
@@ -33,8 +35,9 @@ let vm = new Vue({
       	this.hasData = true;
         let dataArr = localStorage.getItem('dataArr');
         dataArr = JSON.parse(dataArr);
-        console.log(dataArr[0]);
-        //
+        this.dataArr = dataArr;
+        // console.log(dataArr[0]);
+
         // localStorage.removeItem("dataArr");
       }
       
@@ -50,10 +53,10 @@ let vm = new Vue({
           const wb = XLSX.read(data, {type : 'binary'});
           // wb.SheetNames[0]是获取Sheets中第一个Sheet的名字
           // wb.Sheets[Sheet名]获取第一个Sheet的数据
-          const dataArr = JSON.stringify(XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]));
-          // const dataArr = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
+          // const dataArr = JSON.stringify(XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]));
+          const dataArr = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
 
-          console.log(dataArr);
+          console.log(dataArr[0].学生姓名);
           // localStorage.setItem('dataArr', dataArr);
         };
         reader.readAsBinaryString(f);
@@ -62,7 +65,11 @@ let vm = new Vue({
 
     clickImportFile: function () {
       document.getElementById("excel-file").click();
-    }
+    },
+
+		storeData2Local: function () {
+			localStorage.setItem('dataArr', this.dataArr);
+		}
 
   }
 });
