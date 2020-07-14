@@ -1,6 +1,9 @@
 let vm = new Vue({
   el: '#index-body',
   data: {
+		loadingMask: true,
+
+  	hasData: false,
   },
 
   beforeCreate () {
@@ -24,8 +27,10 @@ let vm = new Vue({
   methods: {
 
     init: function () {
+			this.loadingMask = false;
 
       if (localStorage.getItem('dataArr')) {
+      	this.hasData = true;
         let dataArr = localStorage.getItem('dataArr');
         dataArr = JSON.parse(dataArr);
         console.log(dataArr[0]);

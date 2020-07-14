@@ -6,6 +6,91 @@ html, body {
 	min-height: 100%;
 	background: #78c3ea;
 	display: flex;
-	flex-direction: column;
+	justify-content: center;
 	align-items: center;
+	.subarea-box {
+		margin: 0 30px;
+		width: 300px;
+		height: 300px;
+		background: white;
+		border-radius: 30px;
+		display: flex;
+		flex-direction: column;
+		padding: 20px;
+		box-sizing: border-box;
+		border: 1px solid grey;
+		box-shadow: 5px 5px 5px black;
+	}
+}
+
+.loadingMask {
+	width: 100%;
+	height: 100%;
+	background: rgb(135, 135, 135);
+	position: fixed;left: 0;top: 0;
+	z-index: 999;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	color: white;
+	.circle-image-1 {
+		width: 25%;
+		height: 0;
+		padding-bottom: 25%;
+		position: absolute;
+		background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.8));
+		border-radius: 50%;
+		animation-name: loadingCircle;
+		animation-duration: 5s;
+		animation-iteration-count: infinite;
+	}
+	.circle-image-2 {
+		width: 20%;
+		height: 0;
+		padding-bottom: 20%;
+		position: absolute;
+		background: rgb(135, 135, 135);
+		border-radius: 50%;
+	}
+	.title {
+		font-size: 200%;
+		margin-bottom: 20px;
+		position: relative;
+		.dot-1, .dot-2, .dot-3 {
+			position: relative;
+			animation-name: dotJumping;
+			animation-duration: 2s;
+			animation-iteration-count: infinite;
+		}
+		.dot-2 {
+			animation-delay: 400ms;
+		}
+		.dot-3 {
+			animation-delay: 800ms;
+		}
+	}
+	.desc {
+		position: relative;
+	}
+}
+
+@keyframes loadingCircle {
+	from {transform: rotate(0)}
+	to {transform: rotate(360deg)}
+}
+
+@keyframes dotJumping {
+	from {top: 0}
+	30% {top: -10px}
+	60% {top: 0}
+	to {top: 0}
+}
+
+.showFigure-enter-active, .showFigure-leave-active {
+	transition: all 0.5s;
+}
+.showFigure-enter, .showFigure-leave-to {
+	//height: 40%;
+	opacity: 0;
 }

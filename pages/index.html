@@ -12,8 +12,24 @@
 
 <body>
 <div id="index-body" v-cloak>
+
+  <transition name="showFigure">
+    <div class="loadingMask" v-if="loadingMask">
+      <div class="circle-image-1"></div>
+      <div class="circle-image-2"></div>
+      <div class="title">
+        载入中<span class="dot-1">.</span><span class="dot-2">.</span><span class="dot-3">.</span>
+      </div>
+      <span class="desc">初次载入可能较慢 请耐心等待</span>
+      <span class="desc">如长时间没有响应 可ctrl+f5强制刷新页面</span>
+    </div>
+  </transition>
+
   <input type="file" id="excel-file" style="display: none" />
-  <div style="width: 100px;height: 100px;background: red" @click="clickImportFile()"></div>
+  <div class="subarea-box">
+    当前浏览器是否存有相关数据：{{hasData?'是':'否'}}
+    <div style="width: 100px;height: 100px;background: red" @click="clickImportFile()"></div>
+  </div>
 </div>
 </body>
 
