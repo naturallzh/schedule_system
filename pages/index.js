@@ -7,7 +7,7 @@ let vm = new Vue({
 		able2Import: true,		// 每次打开浏览器只允许导入一次excel，再次导入需要刷新页面
 		able2StoreData: true,	// 每次打开浏览器只允许覆写一次localStorage，再次导入需要刷新页面
 		inputRemoveCode: '',	// 输入的清除密码
-		veriRemoveCode: 'Fengts19911127',	// 清除密码
+		veriRemoveCode: 'jizhideadou1991',	// 清除密码
 
 		popupFlag: {
 			removeWin: false,
