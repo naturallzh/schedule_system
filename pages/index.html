@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="../lib/init.css"/>
+  <link rel="stylesheet" type="text/css" href="../lib/base.css"/>
+
+  <link rel="stylesheet" type="text/css" href="index.css"/>
+</head>
+
+<body>
+<div id="index-body" v-cloak>
+  <input type="file" id="excel-file" style="display: none" />
+  <div style="width: 100px;height: 100px;background: red" @click="clickImportFile()"></div>
+</div>
+</body>
+
+<script src="https://cdn.staticfile.org/vue/2.6.10/vue.min.js"></script>
+<script src="https://cdn.bootcss.com/xlsx/0.12.6/xlsx.full.min.js"></script>
+<script type="text/javascript" src="../lib/base.js"></script>
+
+<script type="text/javascript" src="index.js"></script>
+</html>

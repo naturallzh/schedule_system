@@ -1,0 +1,2 @@
+// 使得DOM中利用vue变量动态显示的变量在渲染成功之前不显示，否则会短暂闪过{{XXXXX}}
+[v-cloak] {display: none;}
