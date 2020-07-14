@@ -70,6 +70,7 @@ let vm = new Vue({
           vm.dataArr = dataArr;
 
           console.log('导入成功 dataArr[0].stuName: ' + dataArr[0].学生姓名);
+          alert('导入excel数据成功 但还未覆写浏览器存储');
         };
         reader.readAsBinaryString(f);
       };
@@ -88,6 +89,7 @@ let vm = new Vue({
 				localStorage.setItem('dataArr', dataArr);
 				this.hasData = true;
 				console.log('覆写浏览器存储成功 localStorage[0].stuName: ' + this.dataArr[0].学生姓名)
+				alert('覆写浏览器存储成功');
 			}
     	this.able2StoreData = false;
 		},
