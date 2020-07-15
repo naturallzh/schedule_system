@@ -1,3 +1,10 @@
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none; }
+
+input[type="number"] {
+  -moz-appearance: textfield; }
+
 html, body {
   height: 100%; }
 
@@ -58,7 +65,8 @@ html, body {
         text-align: center; }
   #edit-data-body .mod-table-item-win {
     display: flex;
-    flex-direction: column; }
+    flex-direction: column;
+    margin: 0 50px; }
     #edit-data-body .mod-table-item-win .sub-box {
       height: 30px;
       background: white;
@@ -72,6 +80,9 @@ html, body {
       #edit-data-body .mod-table-item-win .sub-box .right {
         display: flex;
         align-items: center; }
+        #edit-data-body .mod-table-item-win .sub-box .right select, #edit-data-body .mod-table-item-win .sub-box .right option {
+          height: 25px;
+          font-size: 16px; }
       #edit-data-body .mod-table-item-win .sub-box .input-text {
         height: 18px;
         font-size: 16px;

@@ -25,7 +25,7 @@
     </div>
   </transition>
 
-  <div class="table-body">
+  <div class="table-body" id="table-body">
     <div class="table-header">
       <div class="single-box" style="border-left: 1px solid black;width: 90px">编号</div>
       <div class="single-box" style="width: 100px">新增时间</div>
@@ -43,18 +43,18 @@
     </div>
     <div class="table-item" v-for="(tableItem,tableIdx) in dataArr" :style="highLightIdx===tableIdx?'box-shadow: -10px 0 10px red':''">
       <div class="single-box" style="border-left: 1px solid black;width: 90px">{{tableItem.id}}</div>
-      <div class="single-box" style="width: 100px">{{timestamp2Str(tableItem.creatTime)}}</div>
-      <div class="single-box" style="width: 80px">{{tableItem.stuName}}</div>
-      <div class="single-box" style="width: 110px">{{tableItem.coName}}</div>
-      <div class="single-box" style="width: 80px">{{tableItem.tutorName}}</div>
-      <div class="single-box" style="width: 180px">{{tableItem.tutorClass}}</div>
-      <div class="single-box" style="width: 75px">{{tableItem.progress}}/{{tableItem.maxProgress}}</div>
-      <div class="single-box" style="width: 60px">{{stateCol.recLetterState[tableItem.recLetterState]}}</div>
-      <div class="single-box" style="width: 100px">{{timestamp2Str(tableItem.recTime)}}</div>
-      <div class="single-box" style="width: 75px">{{tableItem.income}}</div>
-      <div class="single-box" style="width: 75px">{{stateCol.paymentState[tableItem.paymentState]}}</div>
-      <div class="single-box" style="width: 60px">{{tableItem.cost}}</div>
-      <div class="single-box" style="width: 45px">{{tableItem.remark?'查看':''}}</div>
+      <div class="single-box" style="width: 100px">{{tableItem.creatTime}}</div>
+      <div class="single-box" style="width: 80px" :style="modifiedBgStr(tableIdx,'stuName')">{{tableItem.stuName}}</div>
+      <div class="single-box" style="width: 110px" :style="modifiedBgStr(tableIdx,'coName')">{{tableItem.coName}}</div>
+      <div class="single-box" style="width: 80px" :style="modifiedBgStr(tableIdx,'tutorName')">{{tableItem.tutorName}}</div>
+      <div class="single-box" style="width: 180px" :style="modifiedBgStr(tableIdx,'tutorClass')">{{tableItem.tutorClass}}</div>
+      <div class="single-box" style="width: 75px" :style="modifiedBgStr(tableIdx,'progress')">{{tableItem.progress}}/{{tableItem.maxProgress}}</div>
+      <div class="single-box" style="width: 60px" :style="modifiedBgStr(tableIdx,'recLetterState')">{{stateCol.recLetterState[tableItem.recLetterState]}}</div>
+      <div class="single-box" style="width: 100px" :style="modifiedBgStr(tableIdx,'recTime')">{{tableItem.recTime}}</div>
+      <div class="single-box" style="width: 75px" :style="modifiedBgStr(tableIdx,'income')">{{tableItem.income}}</div>
+      <div class="single-box" style="width: 75px" :style="modifiedBgStr(tableIdx,'paymentState')">{{stateCol.paymentState[tableItem.paymentState]}}</div>
+      <div class="single-box" style="width: 60px" :style="modifiedBgStr(tableIdx,'cost')">{{tableItem.cost}}</div>
+      <div class="single-box" style="width: 45px" :style="modifiedBgStr(tableIdx,'remark')">{{tableItem.remark?'查看':''}}</div>
       <div class="btn" style="margin-left: 10px;padding: 0 3px" @click="openModTableItemWin(tableIdx)" @mouseover.stop="highLightItem(tableIdx)">编辑</div>
     </div>
     <div class="table-footer">
@@ -64,16 +64,16 @@
   </div>
 
   <transition name="showMask">
-    <div class="popup-bg" v-if="popupFlag.modifyWin" @click="closeModTableItemWin()" style="background: rgba(0, 0, 0, 0.8);">
-      <div class="mod-table-item-win" @click.stop>
+    <div class="popup-bg" v-if="popupFlag.modifyWin" style="background: rgba(0, 0, 0, 0.8);flex-direction: row">
+      <div class="btn" style="font-size: 25px;padding: 5px" @click="closeModTableItemWin()">取消</div>
+      <div class="mod-table-item-win">
         <div class="sub-box" style="border-top: 1px solid black">
           <div class="left">编号</div>
           <div class="right">{{modItemObj.id}}</div>
         </div>
         <div class="sub-box">
           <div class="left">新增时间</div>
-          <input  class="right input-text" type="date" value="2020-03-06" id="creat-time"/>
-
+          <input class="right input-text" type="date" v-model="modItemObj.creatTime"/>
         </div>
         <div class="sub-box">
           <div class="left">学生姓名</div>
@@ -85,7 +85,11 @@
         </div>
         <div class="sub-box">
           <div class="left">导师姓名</div>
-          <input class="right input-text" v-model="modItemObj.tutorName" />
+          <div class="right" style="justify-content: flex-end">
+            <select v-model="modItemObj.tutorName">
+              <option v-for="(tutorNameData, tutorNameIdx) in tutorData" :value="tutorNameData.name">{{tutorNameData.name}}</option>
+            </select>
+          </div>
         </div>
         <div class="sub-box">
           <div class="left">导师职位</div>
@@ -95,35 +99,44 @@
           <div class="left">实习进度</div>
           <div class="right" style="justify-content: flex-end">
             <select v-model="modItemObj.progress">
-              <option v-for="progressData in [0,1,2,3,4]">{{progressData}}</option>
-            </select>/4
+              <option v-for="progressData in [0,1,2,3,4]" :value="progressData">{{progressData}}</option>
+            </select><span style="margin-left: 5px">/4</span>
           </div>
         </div>
         <div class="sub-box">
           <div class="left">推荐信</div>
-          <div class="right">{{stateCol.recLetterState[modItemObj.recLetterState]}}</div>
+          <div class="right" style="justify-content: flex-end">
+            <select v-model="modItemObj.recLetterState" v-if="modItemObj.progress>=4">
+              <option v-for="(recLetterStateData, recLetterStateIdx) in stateCol.recLetterState" :value="recLetterStateIdx">{{recLetterStateData}}</option>
+            </select>
+          </div>
         </div>
         <div class="sub-box">
           <div class="left">签发时间</div>
-          <div class="right">{{timestamp2Str(modItemObj.recTime)}}</div>
+          <input class="right input-text" type="date" v-model="modItemObj.recTime" v-if="modItemObj.recLetterState>=3 && modItemObj.progress>=4"/>
         </div>
         <div class="sub-box">
           <div class="left">合作价格</div>
-          <input class="right input-text" v-model="modItemObj.income" />
+          <input class="right input-text" v-model="modItemObj.income" type="number"/>
         </div>
         <div class="sub-box">
           <div class="left">付款情况</div>
-          <div class="right">{{stateCol.paymentState[modItemObj.paymentState]}}</div>
+          <div class="right" style="justify-content: flex-end">
+            <select v-model="modItemObj.paymentState" v-if="modItemObj.progress>=4">
+              <option v-for="(paymentStateData, paymentStateIdx) in stateCol.paymentState" :value="paymentStateIdx">{{paymentStateData}}</option>
+            </select>
+          </div>
         </div>
         <div class="sub-box">
           <div class="left">支出</div>
-          <input class="right input-text" v-model="modItemObj.cost" />
+          <input class="right input-text" v-model="modItemObj.cost" type="number"/>
         </div>
         <div class="sub-box">
           <div class="left">备注</div>
-          <div class="right">{{modItemObj.remark}}</div>
+          <input class="right input-text" v-model="modItemObj.remark" />
         </div>
       </div>
+      <div class="btn" style="font-size: 25px;padding: 5px" @click="commitMod()">确认</div>
     </div>
   </transition>
 

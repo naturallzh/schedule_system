@@ -4,12 +4,14 @@ let vm = new Vue({
 		loadingMask: true,
 
 		stateCol: {},
+		tutorData: [],
 
 		hasData: false,
 		highLightIdx: -1,
 
 		defaultModItemObj: {},
 		modItemObj: {},
+		editIdx: -1,
 
 		popupFlag: {
 			modifyWin: false,
@@ -41,9 +43,11 @@ let vm = new Vue({
 	methods: {
 
 		init: function () {
+			//document.getElementById('table-body').scrollIntoView();
 			this.loadingMask = false;
 
 			this.stateCol = DATA_stateCol;
+			this.tutorData = DATA_tutorData;
 
 			this.checkLocalStorage();
 
@@ -54,21 +58,45 @@ let vm = new Vue({
 			}
 		},
 
-		timestamp2Str: function (stampStr) {
-			if (!stampStr) {return ''}
-			return stampStr.slice(0,4) + '/' + stampStr.slice(4,6) + '/' + stampStr.slice(6);
+		commitMod: function () {
+			if (this.modItemObj.progress<=3) {
+				this.modItemObj.recLetterState = 0;
+				this.modItemObj.recTime = null;
+				this.modItemObj.paymentState = 0;
+			}
+			if (this.modItemObj.recLetterState<=2) {
+				this.modItemObj.recTime = null;
+			}
+			console.log(this.modItemObj);
+
+			const dataArr = this.dataArr;
+			dataArr[this.editIdx] = this.modItemObj;
+			this.dataArr = dataArr;
+
+			this.closeModTableItemWin();
 		},
 
 		openModTableItemWin: function (idx) {
+			let data = this.dataArr[idx];
+			data = JSON.parse(JSON.stringify(data));
 			this.popupFlag.modifyWin = true;
+			this.editIdx = idx;
 
-			const dataItem = this.dataArr[idx];
-			this.modItemObj = dataItem;
-			console.log(dataItem.stuName);
+			this.modItemObj = data;
+			//console.log(dataItem.stuName);
 		},
 		closeModTableItemWin: function () {this.popupFlag.modifyWin = false;},
 
 		highLightItem: function (idx) {this.highLightIdx = idx},
+		modifiedBgStr : function (itemIdx, keyName) {
+			const oriData = JSON.parse(localStorage.getItem('dataArr'))[itemIdx];
+			const curData = this.dataArr[itemIdx];
+			if (!oriData) {return 'background: yellow';}
+			if (oriData[keyName] != curData[keyName]) {
+				return 'background: yellow';
+			}
+			else {return '';}
+		},
 
 		checkLocalStorage: checkLocalStorage,
 		addZero: addZero,
