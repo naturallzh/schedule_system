@@ -11,23 +11,26 @@ const DATA_TutorData = [
 	{id:'', name:'许馨怡'},
 	{id:'', name:'戴骥云'},
 	{id:'', name:'周琛'},
-]
-
-const DATA_orderData = [
-	{
-		id: '20200001',
-		creatTime: '20200306',
-		stuName: '罗丹延',
-		coName: '菜鸟',
-		tutorName: '宋进',
-		tutorClass: '高级运营解决方案专家',
-		progress: 4,
-		maxProgress: 4,
-		recLetter: 3,	// 0未完成课程 1草拟中 2待签发 3已签发
-		recTime: '20200201',
-		income: 7000,
-		paymentState: 2, // 0未完成课程 1待支付 2已付清
-		cost: 2000,
-		remark: ""
-	},
 ];
+
+const DATA_tableHeaderMap = {
+	id: '编号',
+	creatTime: '新增时间',
+	stuName: '学生姓名',
+	coName: '企业名称',
+	tutorName: '导师姓名',
+	tutorClass: '导师职位',
+	progress: '当前进度',
+	maxProgress: '总进度',
+	recLetterState: '推荐信',	// 0未完成课程 1草拟中 2待签发 3已签发
+	recTime: '签发时间',
+	income: '合作价格',
+	paymentState: '付款情况', // 0未完成课程 1待支付 2已付清
+	cost: '支出',
+	remark: '备注'
+};
+
+const DATA_stateCol = {
+	recLetterState: ['','草拟中','待签发','已签发'],
+	paymentState: ['','待支付','已付清'],
+};

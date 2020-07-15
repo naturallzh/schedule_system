@@ -20,5 +20,20 @@ html, body {
 		box-sizing: border-box;
 		border: 1px solid grey;
 		box-shadow: 5px 5px 5px black;
+		position: relative;
+		.modify-mask {
+			width: 90%;
+			height: 120px;
+			position: absolute;
+			top: 40px;
+			left: 5%;
+			background: rgba(128, 128, 128, 0.7);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			color: white;
+			font-size: 30px;
+			font-weight: bold;
+		}
 	}
 }

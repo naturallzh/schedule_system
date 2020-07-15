@@ -26,7 +26,9 @@
   </transition>
 
   <input type="file" id="excel-file" style="display: none" />
+
   <div class="subarea-box">
+    <div class="modify-mask" @click.stop="openModMaskWin()" v-if="able2ModMask">封 印</div>
     当前浏览器是否存有相关数据：{{hasData?'是':'否'}}
     <div class="btn" style="height: 30px;margin: 5px 0" @click="clickImportFile()">
       {{able2Import?'导入excel':'如需再次导入请刷新页面'}}
@@ -35,8 +37,12 @@
       {{able2StoreData?'覆写浏览器存储':'如需再次覆写请刷新页面'}}
     </div>
     <div class="btn" style="height: 30px;margin: 5px 0;background: red" @click="openRemoveWin()">
-      清除浏览器存储 !!慎重!!
+      {{able2RemoveData?'清除浏览器存储 !!慎重!!':'如需再次清除请刷新页面'}}
     </div>
+  </div>
+
+  <div class="subarea-box" style="overflow: auto">
+    <div class="btn" style="height: 30px;margin: 5px 0" @click="gotoEdit()">编辑数据</div>
   </div>
 
   <transition name="showMask">
@@ -71,10 +77,24 @@
     </div>
   </transition>
 
+  <transition name="showMask">
+    <div class="popup-bg" v-if="popupFlag.modMaskWin" @click="closeModMaskWin()">
+      <div class="dialog-win" @click.stop>
+        <div class="upper-box">
+          <div class="text">即将解除对浏览器存储进行操作的封印</div>
+        </div>
+        <div class="lower-box">
+          <div class="btn cancel-btn" @click="closeModMaskWin()">取消</div>
+          <div class="btn confirm-btn" @click="removeModMask()">确定</div>
+        </div>
+      </div>
+    </div>
+  </transition>
+
 </div>
 </body>
 
-<script src="https://cdn.staticfile.org/vue/2.6.10/vue.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="https://cdn.bootcss.com/xlsx/0.12.6/xlsx.full.min.js"></script>
 <script type="text/javascript" src="../lib/base.js"></script>
 

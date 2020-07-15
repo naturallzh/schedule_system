@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="../lib/init.css"/>
+  <link rel="stylesheet" type="text/css" href="../lib/base.css"/>
+
+  <link rel="stylesheet" type="text/css" href="edit_data.css"/>
+</head>
+
+<body>
+<div id="edit-data-body" v-cloak @mouseover="highLightItem(-1)">
+
+  <transition name="showMask">
+    <div class="loadingMask" v-if="loadingMask">
+      <div class="circle-image-1"></div>
+      <div class="circle-image-2"></div>
+      <div class="title">
+        载入中<span class="dot-1">.</span><span class="dot-2">.</span><span class="dot-3">.</span>
+      </div>
+      <span class="desc">初次载入可能较慢 请耐心等待</span>
+      <span class="desc">如长时间没有响应 可ctrl+f5强制刷新页面</span>
+    </div>
+  </transition>
+
+  <div class="table-body">
+    <div class="table-header">
+      <div class="single-box" style="border-left: 1px solid black;width: 90px">编号</div>
+      <div class="single-box" style="width: 100px">新增时间</div>
+      <div class="single-box" style="width: 80px">学生姓名</div>
+      <div class="single-box" style="width: 110px">企业名称</div>
+      <div class="single-box" style="width: 80px">导师姓名</div>
+      <div class="single-box" style="width: 180px">导师职位</div>
+      <div class="single-box" style="width: 75px">实习进度</div>
+      <div class="single-box" style="width: 60px">推荐信</div>
+      <div class="single-box" style="width: 100px">签发时间</div>
+      <div class="single-box" style="width: 75px">合作价格</div>
+      <div class="single-box" style="width: 75px">付款情况</div>
+      <div class="single-box" style="width: 60px">支出</div>
+      <div class="single-box" style="width: 45px">备注</div>
+    </div>
+    <div class="table-item" v-for="(tableItem,tableIdx) in dataArr" :style="highLightIdx===tableIdx?'box-shadow: -10px 0 10px red':''">
+      <div class="single-box" style="border-left: 1px solid black;width: 90px">{{tableItem.id}}</div>
+      <div class="single-box" style="width: 100px">{{timestamp2Str(tableItem.creatTime)}}</div>
+      <div class="single-box" style="width: 80px">{{tableItem.stuName}}</div>
+      <div class="single-box" style="width: 110px">{{tableItem.coName}}</div>
+      <div class="single-box" style="width: 80px">{{tableItem.tutorName}}</div>
+      <div class="single-box" style="width: 180px">{{tableItem.tutorClass}}</div>
+      <div class="single-box" style="width: 75px">{{tableItem.progress}}/{{tableItem.maxProgress}}</div>
+      <div class="single-box" style="width: 60px">{{stateCol.recLetterState[tableItem.recLetterState]}}</div>
+      <div class="single-box" style="width: 100px">{{timestamp2Str(tableItem.recTime)}}</div>
+      <div class="single-box" style="width: 75px">{{tableItem.income}}</div>
+      <div class="single-box" style="width: 75px">{{stateCol.paymentState[tableItem.paymentState]}}</div>
+      <div class="single-box" style="width: 60px">{{tableItem.cost}}</div>
+      <div class="single-box" style="width: 45px">{{tableItem.remark?'查看':''}}</div>
+      <div class="btn" style="margin-left: 10px;padding: 0 3px" @click="openModTableItemWin(tableIdx)" @mouseover.stop="highLightItem(tableIdx)">编辑</div>
+    </div>
+    <div class="table-footer">
+      <div class="btn" style="width: 80px">新增</div>
+      <div class="btn" style="width: 80px">提交</div>
+    </div>
+  </div>
+
+  <transition name="showMask">
+    <div class="popup-bg" v-if="popupFlag.modifyWin" @click="closeModTableItemWin()" style="background: rgba(0, 0, 0, 0.8);">
+      <div class="mod-table-item-win" @click.stop>
+        <div class="sub-box" style="border-top: 1px solid black">
+          <div class="left">编号</div>
+          <div class="right">{{modItemObj.id}}</div>
+        </div>
+        <div class="sub-box">
+          <div class="left">新增时间</div>
+          <input  class="right input-text" type="date" value="2020-03-06" id="creat-time"/>
+
+        </div>
+        <div class="sub-box">
+          <div class="left">学生姓名</div>
+          <input class="right input-text" v-model="modItemObj.stuName" />
+        </div>
+        <div class="sub-box">
+          <div class="left">企业名称</div>
+          <input class="right input-text" v-model="modItemObj.coName" />
+        </div>
+        <div class="sub-box">
+          <div class="left">导师姓名</div>
+          <input class="right input-text" v-model="modItemObj.tutorName" />
+        </div>
+        <div class="sub-box">
+          <div class="left">导师职位</div>
+          <input class="right input-text" v-model="modItemObj.tutorClass" />
+        </div>
+        <div class="sub-box">
+          <div class="left">实习进度</div>
+          <div class="right" style="justify-content: flex-end">
+            <select v-model="modItemObj.progress">
+              <option v-for="progressData in [0,1,2,3,4]">{{progressData}}</option>
+            </select>/4
+          </div>
+        </div>
+        <div class="sub-box">
+          <div class="left">推荐信</div>
+          <div class="right">{{stateCol.recLetterState[modItemObj.recLetterState]}}</div>
+        </div>
+        <div class="sub-box">
+          <div class="left">签发时间</div>
+          <div class="right">{{timestamp2Str(modItemObj.recTime)}}</div>
+        </div>
+        <div class="sub-box">
+          <div class="left">合作价格</div>
+          <input class="right input-text" v-model="modItemObj.income" />
+        </div>
+        <div class="sub-box">
+          <div class="left">付款情况</div>
+          <div class="right">{{stateCol.paymentState[modItemObj.paymentState]}}</div>
+        </div>
+        <div class="sub-box">
+          <div class="left">支出</div>
+          <input class="right input-text" v-model="modItemObj.cost" />
+        </div>
+        <div class="sub-box">
+          <div class="left">备注</div>
+          <div class="right">{{modItemObj.remark}}</div>
+        </div>
+      </div>
+    </div>
+  </transition>
+
+</div>
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script type="text/javascript" src="../lib/base.js"></script>
+
+<script type="text/javascript" src="data.js"></script>
+<script type="text/javascript" src="edit_data.js"></script>
+</html>
