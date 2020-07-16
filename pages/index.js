@@ -103,15 +103,16 @@ let vm = new Vue({
 				if (!dataArr[i].新增时间) {break;}
 				outputArr[i] = {
 					id: 20200000+parseInt(dataArr[i].编号)+'',
-					creatTime: (dataArr[i].新增时间).split('/')[0] + '-' + this.addZero((dataArr[i].新增时间).split('/')[1]) + '-' + this.addZero((dataArr[i].新增时间).split('/')[2]),
+					createTime: (dataArr[i].新增时间).split('/')[0] + '-' + this.addZero((dataArr[i].新增时间).split('/')[1]) + '-' + this.addZero((dataArr[i].新增时间).split('/')[2]),
 					stuName: dataArr[i].学生姓名,
 					coName: dataArr[i].企业名称,
 					tutorName: dataArr[i].导师姓名,
 					tutorClass: dataArr[i].导师职位,
 					progress: parseInt((dataArr[i].实习进度).split('/')[0]),
 					maxProgress: parseInt((dataArr[i].实习进度).split('/')[1]),
+					meetTime: dataArr[i].沟通时间?dataArr[i].沟通时间:'',
 					recLetterState: calcRecLetterState(dataArr[i].推荐信),	// 0未完成课程 1草拟中 2待签发 3已签发
-					recTime: dataArr[i].签发时间?(dataArr[i].签发时间).split('/')[0] + '-' + this.addZero((dataArr[i].签发时间).split('/')[1]) + '-' + this.addZero((dataArr[i].签发时间).split('/')[2]):null,
+					recTime: dataArr[i].签发时间?(dataArr[i].签发时间).split('/')[0] + '-' + this.addZero((dataArr[i].签发时间).split('/')[1]) + '-' + this.addZero((dataArr[i].签发时间).split('/')[2]):'',
 					income: parseInt(dataArr[i].合作价格),
 					paymentState: calcPaymentState(dataArr[i].付款情况), // 0未完成课程 1待支付 2已付清
 					cost: parseInt(dataArr[i].支出),
@@ -191,6 +192,19 @@ let vm = new Vue({
 		gotoEdit: function () {
 			let url = "edit_data.html";
 			window.open(url);
+		},
+
+		exportFile: function () {
+			this.localStorage2Arr();
+
+			return;
+			const aoa = [];
+			const sheet = XLSX.utils.aoa_to_sheet(aoa);
+			openDownloadDialog(sheet2blob(sheet), '导出.xlsx');
+		},
+
+		localStorage2Arr: function () {
+			const data = JSON.parse(localStorage.getItem('dataArr'));
 		},
 
 		checkLocalStorage: checkLocalStorage,

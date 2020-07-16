@@ -18,6 +18,7 @@ html, body {
 	justify-content: center;
 	align-items: center;
 	.table-header {
+		z-index: 2;
 		position: fixed;
 		top: 0;
 		left: 0;
@@ -58,16 +59,25 @@ html, body {
 		display: flex;
 		flex-direction: column;
 		.table-item {
-			width: 1300px;
+			width: 1400px;
 			display: flex;
 			margin: 3px 0;
 			.single-box {
+				position: relative;
 				background: white;
 				min-width: 30px;
 				padding: 3px;
 				border: 1px solid black;
 				border-left: 0;
 				text-align: center;
+				.remark-box {
+					width: 200px;
+					height: 70px;
+					background: #ffedc3;
+					position: absolute;
+					left: 60px;
+					top: -3px;
+				}
 			}
 		}
 	}

@@ -1,16 +1,16 @@
 const DATA_tutorData = [
-	{id:'', name:'何雍森'},
-	{id:'', name:'陈韵如'},
-	{id:'', name:'李敏威'},
-	{id:'', name:'张荣斌'},
-	{id:'', name:'朱献饶'},
-	{id:'', name:'宋进'},
-	{id:'', name:'王顺恺'},
-	{id:'', name:'张凡'},
-	{id:'', name:'沈子杰'},
-	{id:'', name:'许馨怡'},
-	{id:'', name:'戴骥云'},
-	{id:'', name:'周琛'},
+	{id:'', tutorName:'何雍森', coName: '普华永道', tutorClass: '高级审计经理', income: 6000, cost: 2000},
+	{id:'', tutorName:'陈韵如', coName: '宝洁', tutorClass: 'City Manager', income: 6000, cost: 2500},
+	{id:'', tutorName:'李敏威', coName: '毕马威', tutorClass: '高级审计经理', income: 6000, cost: 2500},
+	{id:'', tutorName:'张荣斌', coName: '阿里巴巴', tutorClass: '高级项目经理', income: 7000, cost: 3000},
+	{id:'', tutorName:'朱献饶', coName: '摩根士丹利', tutorClass: 'ECM Analyst', income: 8000, cost: 4500},
+	{id:'', tutorName:'宋进', coName: '菜鸟', tutorClass: '高级运营解决方案专家', income: 6000, cost: 2000},
+	{id:'', tutorName:'王顺恺', coName: '德勤', tutorClass: '高级审计经理', income: 6000, cost: 2500},
+	{id:'', tutorName:'张凡', coName: '麦肯锡', tutorClass: '咨询经理', income: 8500, cost: 6500},
+	{id:'', tutorName:'沈子杰', coName: '德勤', tutorClass: '高级审计经理', income: 6000, cost: 2500},
+	{id:'', tutorName:'许馨怡', coName: '普华永道', tutorClass: '高级咨询经理', income: 6000, cost: 3000},
+	{id:'', tutorName:'戴骥云', coName: '东方证券', tutorClass: '分析师', income: 6000, cost: 2700},
+	{id:'', tutorName:'周琛', coName: '高盛', tutorClass: '分析师', income: 8500, cost: 4500},
 ];
 
 const DATA_tableHeaderMap = {
@@ -22,6 +22,7 @@ const DATA_tableHeaderMap = {
 	tutorClass: '导师职位',
 	progress: '当前进度',
 	maxProgress: '总进度',
+	meetTime: '沟通时间',			// 预计下一次见面沟通的时间
 	recLetterState: '推荐信',	// 0未完成课程 1草拟中 2待签发 3已签发
 	recTime: '签发时间',
 	income: '合作价格',
