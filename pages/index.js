@@ -49,6 +49,7 @@ let vm = new Vue({
 			this.stateCol = DATA_stateCol;
 
 			this.checkLocalStorage();
+			checkLocalStorageTutorData();
 
 			const inputEle = document.getElementById("excel-file");
 			// 为input添加onchange事件
@@ -198,9 +199,12 @@ let vm = new Vue({
 		},
 
 		exportFile: function () {
-			const aoa = this.localStorage2Arr();
-			const sheet = XLSX.utils.aoa_to_sheet(aoa);
-			openDownloadDialog(sheet2blob(sheet), '导出.xlsx');
+			const sheet1 = XLSX.utils.aoa_to_sheet(this.localStorage2Arr());
+			let fileName = 'True_Talent_Data_';
+			const timeObj = new Date();
+			fileName += timeObj.getFullYear() + addZero(timeObj.getMonth()+1) + addZero(timeObj.getDate()) + '_';
+			fileName += addZero(timeObj.getHours()) + addZero(timeObj.getMinutes()) + addZero(timeObj.getSeconds()) + '.xlsx';
+			openDownloadDialog(sheet2blob([sheet1]), fileName);
 		},
 
 		localStorage2Arr: function () {
