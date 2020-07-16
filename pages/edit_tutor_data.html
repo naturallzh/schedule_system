@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="stylesheet" type="text/css" href="../lib/init.css"/>
+  <link rel="stylesheet" type="text/css" href="../lib/base.css"/>
+
+  <link rel="stylesheet" type="text/css" href="edit_tutor_data.css"/>
+</head>
+
+<body>
+<div id="edit-tutor-data-body" v-cloak @mouseover="highLightItem(-1);showRemark(-1)">
+
+  <transition name="showMask">
+    <div class="loadingMask" v-if="loadingMask">
+      <div class="circle-image-1"></div>
+      <div class="circle-image-2"></div>
+      <div class="title">
+        载入中<span class="dot-1">.</span><span class="dot-2">.</span><span class="dot-3">.</span>
+      </div>
+      <span class="desc">初次载入可能较慢 请耐心等待</span>
+      <span class="desc">如长时间没有响应 可ctrl+f5强制刷新页面</span>
+    </div>
+  </transition>
+
+  <div class="table-body" id="table-body">
+    <div class="table-header">
+      <div class="single-box" style="width: 90px">编号</div>
+      <div class="single-box" style="width: 80px">导师姓名</div>
+      <div class="single-box" style="width: 110px">企业名称</div>
+      <div class="single-box" style="width: 180px">导师职位</div>
+      <div class="single-box" style="width: 75px">合作价格</div>
+      <div class="single-box" style="width: 60px">支出</div>
+      <div class="single-box" style="width: 100px">最大同时授课</div>
+      <div class="single-box" style="width: 45px">备注</div>
+    </div>
+    <div class="table-item" v-for="(tableItem,tableIdx) in dataArr" :style="highLightIdx===tableIdx?'box-shadow: -10px 0 10px red':''">
+      <div class="single-box" style="width: 90px" :style="modifiedBgStr(tableIdx,'id')">{{tableItem.id}}</div>
+      <div class="single-box" style="width: 80px" :style="modifiedBgStr(tableIdx,'tutorName')">{{tableItem.tutorName}}</div>
+      <div class="single-box" style="width: 110px" :style="modifiedBgStr(tableIdx,'coName')">{{tableItem.coName}}</div>
+      <div class="single-box" style="width: 180px" :style="modifiedBgStr(tableIdx,'tutorClass')">{{tableItem.tutorClass}}</div>
+      <div class="single-box" style="width: 75px" :style="modifiedBgStr(tableIdx,'income')">{{tableItem.income}}</div>
+      <div class="single-box" style="width: 60px" :style="modifiedBgStr(tableIdx,'cost')">{{tableItem.cost}}</div>
+      <div class="single-box" style="width: 100px" :style="modifiedBgStr(tableIdx,'maxRece')">{{tableItem.maxRece}}</div>
+      <div class="single-box" style="width: 45px" :style="modifiedBgStr(tableIdx,'remark')">
+				<div @mouseover.stop="showRemark(tableIdx)">{{tableItem.remark?'查看':''}}</div>
+				<div class="remark-box" v-if="showRemarkIdx===tableIdx">{{tableItem.remark}}</div>
+			</div>
+      <div class="btn" style="margin-left: 10px;padding: 0 3px" @click="openModTableItemWin(tableIdx)" @mouseover.stop="highLightItem(tableIdx)">编辑</div>
+    </div>
+    <div class="table-footer">
+      <div class="btn" style="width: 80px" @click="openModTableItemWin(-1)">新增</div>
+      <div class="btn" style="width: 80px" @click="openApproveTutorDataWin()">提交</div>
+      <div class="btn" style="width: 80px" @click="openResetTutorDataWin()">重置</div>
+    </div>
+  </div>
+
+  <transition name="showMask">
+    <div class="popup-bg" v-if="popupFlag.modifyWin" style="background: rgba(0, 0, 0, 0.8);flex-direction: row">
+      <div class="btn" style="font-size: 25px;padding: 5px" @click="closeModTableItemWin()">取消</div>
+      <div class="mod-table-item-win">
+        <div class="sub-box">
+          <div class="left">编号</div>
+          <input class="right input-text" v-model="modItemObj.id" />
+        </div>
+        <div class="sub-box">
+          <div class="left">导师姓名</div>
+          <input class="right input-text" v-model="modItemObj.tutorName" />
+        </div>
+        <div class="sub-box">
+          <div class="left">企业名称</div>
+          <input class="right input-text" v-model="modItemObj.coName" />
+        </div>
+        <div class="sub-box">
+          <div class="left">导师职位</div>
+          <input class="right input-text" v-model="modItemObj.tutorClass" />
+        </div>
+        <div class="sub-box">
+          <div class="left">合作价格</div>
+          <input class="right input-text" v-model="modItemObj.income" type="number"/>
+        </div>
+        <div class="sub-box">
+          <div class="left">支出</div>
+          <input class="right input-text" v-model="modItemObj.cost" type="number"/>
+        </div>
+        <div class="sub-box">
+          <div class="left">最大同时授课</div>
+          <input class="right input-text" v-model="modItemObj.maxRece" type="number"/>
+        </div>
+        <div class="sub-box">
+          <div class="left">备注</div>
+          <input class="right input-text" v-model="modItemObj.remark" />
+        </div>
+      </div>
+      <div class="btn" style="font-size: 25px;padding: 5px" @click="commitMod()">确认</div>
+    </div>
+  </transition>
+
+  <transition name="showMask">
+    <div class="popup-bg" v-if="popupFlag.resetWin" @click="closeResetTutorDataWin()">
+      <div class="dialog-win" @click.stop>
+        <div class="upper-box">
+          <div class="text">即将重置浏览器中存储的企业数据为默认数据</div>
+          <div class="text">请提前导出excel做好备份</div>
+        </div>
+        <div class="lower-box">
+          <div class="btn cancel-btn" @click="closeResetTutorDataWin()">取消</div>
+          <div class="btn confirm-btn" @click="resetTutorData()">确定</div>
+        </div>
+      </div>
+    </div>
+  </transition>
+
+  <transition name="showMask">
+    <div class="popup-bg" v-if="popupFlag.approveWin" @click="closeApproveTutorDataWin()">
+      <div class="dialog-win" @click.stop>
+        <div class="upper-box">
+          <div class="text">即将提交本页修改后的企业数据至浏览器存储</div>
+          <div class="text">请提前导出excel做好备份</div>
+        </div>
+        <div class="lower-box">
+          <div class="btn cancel-btn" @click="closeApproveTutorDataWin()">取消</div>
+          <div class="btn confirm-btn" @click="approveTutorData()">确定</div>
+        </div>
+      </div>
+    </div>
+  </transition>
+
+</div>
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script type="text/javascript" src="../lib/base.js"></script>
+
+<script type="text/javascript" src="data.js"></script>
+<script type="text/javascript" src="edit_tutor_data.js"></script>
+</html>

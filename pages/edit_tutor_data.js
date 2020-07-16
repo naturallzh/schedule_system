@@ -1,12 +1,8 @@
 let vm = new Vue({
-	el: '#edit-data-body',
+	el: '#edit-tutor-data-body',
 	data: {
 		loadingMask: true,
 
-		stateCol: {},
-		tutorData: [],
-
-		hasData: false,
 		highLightIdx: -1,
 		showRemarkIdx: -1,
 
@@ -16,6 +12,8 @@ let vm = new Vue({
 
 		popupFlag: {
 			modifyWin: false,
+			resetWin: false,
+			approveWin: false,
 		},
 
 		dataArr: null,
@@ -47,32 +45,22 @@ let vm = new Vue({
 			//document.getElementById('table-body').scrollIntoView();
 			this.loadingMask = false;
 
-			this.stateCol = DATA_stateCol;
-			this.tutorData = DATA_tutorData;
-
-			this.checkLocalStorage();
-
-			if (localStorage.getItem('dataArr')) {
-				let dataArr = localStorage.getItem('dataArr');
-				dataArr = JSON.parse(dataArr);
-				this.dataArr = dataArr;
+			if (!localStorage.getItem('tutorData')) {
+				const tutorData = JSON.stringify(DATA_tutorData);
+				localStorage.setItem('tutorData', tutorData);
 			}
+			let dataArr = localStorage.getItem('tutorData');
+			dataArr = JSON.parse(dataArr);
+			this.dataArr = dataArr;
 
 			this.defaultModItemObj = {
 				id: '',
-				createTime: '',
-				stuName: '',
-				coName: '',
 				tutorName: '',
+				coName: '',
 				tutorClass: '',
-				progress: 0,
-				maxProgress: 4,
-				meetTime: '',
-				recLetterState: 0,	// 0未完成课程 1草拟中 2待签发 3已签发
-				recTime: '',
 				income: '',
-				paymentState: 0, // 0未完成课程 1待支付 2已付清
 				cost: '',
+				maxRece: 4,
 				remark: ''
 			}
 		},
@@ -81,39 +69,20 @@ let vm = new Vue({
 		commitMod: function () {
 			const itemObj = this.modItemObj;
 
-			if (itemObj.progress<=3) {
-				itemObj.recLetterState = 0;
-				itemObj.recTime = '';
-				itemObj.paymentState = 0;
-			}
-			if (itemObj.recLetterState<=2) {
-				itemObj.recTime = '';
-			}
-			if (itemObj.progress>=4) {
-				itemObj.meetTime = '已结束';
-			}
-			if (itemObj.progress<=3 && itemObj.meetTime.length<8) {
-				itemObj.meetTime = '';
-			}
-
 			itemObj.id += '';
-			itemObj.progress = parseInt(itemObj.progress);
-			itemObj.maxProgress = parseInt(itemObj.maxProgress);
-			itemObj.recLetterState = parseInt(itemObj.recLetterState);
 			itemObj.income = parseInt(itemObj.income);
 			itemObj.cost = parseInt(itemObj.cost);
-			itemObj.paymentState = parseInt(itemObj.paymentState);
+			itemObj.maxRece = parseInt(itemObj.maxRece);
 			console.log(itemObj);
 
 			// 输入校验
 			const checkPool = [
-				[itemObj.createTime.length<8, '新增时间输入有误'],
-				[itemObj.stuName.length<1, '学生姓名输入有误'],
+				[itemObj.tutorName.length<1, '导师名称输入有误'],
 				[itemObj.coName.length<1, '企业名称输入有误'],
 				[itemObj.tutorClass.length<1, '导师职位输入有误'],
-				[itemObj.recLetterState>2 && (itemObj.recTime.length<8), '签发时间输入有误'],
 				[itemObj.income<1 || isNaN(itemObj.income), '合作价格输入有误'],
 				[itemObj.cost<1 || isNaN(itemObj.cost), '支出输入有误'],
+				[itemObj.maxRece<1 || isNaN(itemObj.maxRece), '最大同时授课数输入有误'],
 			];
 			for (let i=0;i<checkPool.length;i++) {
 				if (checkPool[i][0]) {
@@ -129,19 +98,6 @@ let vm = new Vue({
 			this.closeModTableItemWin();
 		},
 
-		// 选择导师时导入默认数据
-		applyDefaultData: function (tutorName) {
-			const tutorData = this.tutorData;
-			for (let i=0;i<tutorData.length;i++) {
-				if (tutorData[i].tutorName === tutorName) {
-					this.modItemObj.coName = tutorData[i].coName;
-					this.modItemObj.tutorClass = tutorData[i].tutorClass;
-					this.modItemObj.income = tutorData[i].income;
-					this.modItemObj.cost = tutorData[i].cost;
-				}
-			}
-		},
-
 		// 编辑或新增时打开弹窗
 		openModTableItemWin: function (idx) {
 			let data;
@@ -154,7 +110,6 @@ let vm = new Vue({
 				this.editIdx = this.dataArr.length;
 				data = this.defaultModItemObj;
 				data = JSON.parse(JSON.stringify(data));
-				data.id = parseInt(this.dataArr[this.dataArr.length-1].id)+1+'';
 				// console.log(data.id);
 				// console.log(this.defaultModItemObj.id);
 			}
@@ -164,11 +119,30 @@ let vm = new Vue({
 		},
 		closeModTableItemWin: function () {this.popupFlag.modifyWin = false;},
 
+		// 提交修改至localStorage
+		openApproveTutorDataWin: function () {this.popupFlag.approveWin = true;},
+		closeApproveTutorDataWin: function () {this.popupFlag.approveWin = false;},
+		approveTutorData: function () {
+			const tutorData = JSON.stringify(this.dataArr);
+			localStorage.setItem('tutorData', tutorData);
+			this.closeApproveTutorDataWin();
+		},
+
+		// 重置localStorage为页面自带默认数据
+		openResetTutorDataWin: function () {this.popupFlag.resetWin = true;},
+		closeResetTutorDataWin: function () {this.popupFlag.resetWin = false;},
+		resetTutorData: function () {
+			const tutorData = JSON.stringify(DATA_tutorData);
+			localStorage.setItem('tutorData', tutorData);
+			this.dataArr = DATA_tutorData;
+			this.closeResetTutorDataWin();
+		},
+
 		// 高亮鼠标滑过的条目
 		highLightItem: function (idx) {this.highLightIdx = idx},
 		// 对比修改过的单元格 bg变黄
 		modifiedBgStr : function (itemIdx, keyName) {
-			const oriData = JSON.parse(localStorage.getItem('dataArr'))[itemIdx];
+			const oriData = JSON.parse(localStorage.getItem('tutorData'))[itemIdx];
 			const curData = this.dataArr[itemIdx];
 			if (!oriData) {return 'background: yellow';}
 			if (oriData[keyName] !== curData[keyName]) {
@@ -181,7 +155,6 @@ let vm = new Vue({
 			this.showRemarkIdx = idx;
 		},
 
-		checkLocalStorage: checkLocalStorage,
 		addZero: addZero,
 	}
 });

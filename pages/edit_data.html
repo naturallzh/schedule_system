@@ -28,7 +28,7 @@
 
   <div class="table-body" id="table-body">
     <div class="table-header">
-      <div class="single-box" style="border-left: 1px solid black;width: 90px">编号</div>
+      <div class="single-box" style="width: 90px">编号</div>
       <div class="single-box" style="width: 100px">新增时间</div>
       <div class="single-box" style="width: 80px">学生姓名</div>
       <div class="single-box" style="width: 110px">企业名称</div>
@@ -44,7 +44,7 @@
       <div class="single-box" style="width: 45px">备注</div>
     </div>
     <div class="table-item" v-for="(tableItem,tableIdx) in dataArr" :style="highLightIdx===tableIdx?'box-shadow: -10px 0 10px red':''">
-      <div class="single-box" style="border-left: 1px solid black;width: 90px" :style="modifiedBgStr(tableIdx,'id')">{{tableItem.id}}</div>
+      <div class="single-box" style="width: 90px" :style="modifiedBgStr(tableIdx,'id')">{{tableItem.id}}</div>
       <div class="single-box" style="width: 100px" :style="modifiedBgStr(tableIdx,'createTime')">{{tableItem.createTime}}</div>
       <div class="single-box" style="width: 80px" :style="modifiedBgStr(tableIdx,'stuName')">{{tableItem.stuName}}</div>
       <div class="single-box" style="width: 110px" :style="modifiedBgStr(tableIdx,'coName')">{{tableItem.coName}}</div>

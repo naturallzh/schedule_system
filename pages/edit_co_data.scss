@@ -10,13 +10,13 @@ html, body {
 	height: 100%;
 }
 
-#edit-data-body {
+#edit-co-data-body {
 	width: 100%;
 	min-height: 100%;
 	background: #78c3ea;
 	display: flex;
 	justify-content: center;
-	align-items: center;
+	align-items: flex-start;
 	.table-header {
 		z-index: 2;
 		position: fixed;
@@ -62,7 +62,7 @@ html, body {
 		display: flex;
 		flex-direction: column;
 		.table-item {
-			width: 1400px;
+			width: 340px;
 			display: flex;
 			margin: 3px 0;
 			.single-box {
@@ -116,6 +116,9 @@ html, body {
 				width: 60%;
 				text-align: right;
 			}
+		}
+		.sub-box:first-child {
+			border-top: 1px solid black;
 		}
 	}
 }

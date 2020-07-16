@@ -8,14 +8,14 @@ input[type="number"] {
 html, body {
   height: 100%; }
 
-#edit-data-body {
+#edit-tutor-data-body {
   width: 100%;
   min-height: 100%;
   background: #78c3ea;
   display: flex;
   justify-content: center;
-  align-items: center; }
-  #edit-data-body .table-header {
+  align-items: flex-start; }
+  #edit-tutor-data-body .table-header {
     z-index: 2;
     position: fixed;
     top: 0;
@@ -27,16 +27,16 @@ html, body {
     padding-left: 100px;
     padding-top: 5px;
     box-sizing: border-box; }
-    #edit-data-body .table-header .single-box {
+    #edit-tutor-data-body .table-header .single-box {
       background: white;
       min-width: 30px;
       padding: 3px;
       border: 1px solid black;
       border-left: 0;
       text-align: center; }
-    #edit-data-body .table-header .single-box:first-child {
+    #edit-tutor-data-body .table-header .single-box:first-child {
       border-left: 1px solid black; }
-  #edit-data-body .table-footer {
+  #edit-tutor-data-body .table-footer {
     position: fixed;
     bottom: 0;
     left: 0;
@@ -48,18 +48,18 @@ html, body {
     box-shadow: 0 -5px 7px black;
     box-sizing: border-box;
     padding: 10px 0; }
-  #edit-data-body .table-body {
+  #edit-tutor-data-body .table-body {
     margin: 40px 0 50px;
     width: 100%;
     padding-left: 100px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column; }
-    #edit-data-body .table-body .table-item {
-      width: 1400px;
+    #edit-tutor-data-body .table-body .table-item {
+      width: 860px;
       display: flex;
       margin: 3px 0; }
-      #edit-data-body .table-body .table-item .single-box {
+      #edit-tutor-data-body .table-body .table-item .single-box {
         position: relative;
         background: white;
         min-width: 30px;
@@ -67,20 +67,20 @@ html, body {
         border: 1px solid black;
         border-left: 0;
         text-align: center; }
-        #edit-data-body .table-body .table-item .single-box .remark-box {
+        #edit-tutor-data-body .table-body .table-item .single-box .remark-box {
           width: 200px;
           height: 70px;
           background: #ffedc3;
           position: absolute;
           left: 60px;
           top: -3px; }
-      #edit-data-body .table-body .table-item .single-box:first-child {
+      #edit-tutor-data-body .table-body .table-item .single-box:first-child {
         border-left: 1px solid black; }
-  #edit-data-body .mod-table-item-win {
+  #edit-tutor-data-body .mod-table-item-win {
     display: flex;
     flex-direction: column;
     margin: 0 50px; }
-    #edit-data-body .mod-table-item-win .sub-box {
+    #edit-tutor-data-body .mod-table-item-win .sub-box {
       height: 30px;
       background: white;
       width: 300px;
@@ -90,14 +90,16 @@ html, body {
       display: flex;
       justify-content: space-between;
       align-items: center; }
-      #edit-data-body .mod-table-item-win .sub-box .right {
+      #edit-tutor-data-body .mod-table-item-win .sub-box .right {
         display: flex;
         align-items: center; }
-        #edit-data-body .mod-table-item-win .sub-box .right select, #edit-data-body .mod-table-item-win .sub-box .right option {
+        #edit-tutor-data-body .mod-table-item-win .sub-box .right select, #edit-tutor-data-body .mod-table-item-win .sub-box .right option {
           height: 25px;
           font-size: 16px; }
-      #edit-data-body .mod-table-item-win .sub-box .input-text {
+      #edit-tutor-data-body .mod-table-item-win .sub-box .input-text {
         height: 18px;
         font-size: 16px;
         width: 60%;
         text-align: right; }
+    #edit-tutor-data-body .mod-table-item-win .sub-box:first-child {
+      border-top: 1px solid black; }

@@ -49,7 +49,17 @@ let vm = new Vue({
 			this.stateCol = DATA_stateCol;
 
 			this.checkLocalStorage();
-			checkLocalStorageTutorData();
+			// 导入导师信息
+			if (!localStorage.getItem('tutorData')) {
+				const tutorData = JSON.stringify(DATA_tutorData);
+				localStorage.setItem('tutorData', tutorData);
+			}
+			// 导入企业信息
+			if (!localStorage.getItem('coData')) {
+				const coData = JSON.stringify(DATA_coData);
+				localStorage.setItem('coData', coData);
+			}
+			//checkLocalStorageTutorData();
 
 			const inputEle = document.getElementById("excel-file");
 			// 为input添加onchange事件
@@ -66,6 +76,13 @@ let vm = new Vue({
 					// wb.Sheets[Sheet名]获取第一个Sheet的数据
 					// const dataArr = JSON.stringify(XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]));
 					const dataArr = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
+					if (wb.SheetNames[1]) {
+						const tutorData = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[1]]);
+					}
+					if (wb.SheetNames[2]) {
+						const coData = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[2]]);
+					}
+
 					vm.dataArr = dataArr;
 
 					console.log('导入成功 dataArr[0].stuName: ' + dataArr[0].学生姓名);
@@ -197,14 +214,24 @@ let vm = new Vue({
 			let url = "edit_data.html";
 			window.open(url);
 		},
+		gotoEditTutor: function () {
+			let url = "edit_tutor_data.html";
+			window.open(url);
+		},
+		gotoEditCo: function () {
+			let url = "edit_co_data.html";
+			window.open(url);
+		},
 
 		exportFile: function () {
 			const sheet1 = XLSX.utils.aoa_to_sheet(this.localStorage2Arr());
+			const sheet2 = XLSX.utils.aoa_to_sheet(this.localStorageTutorData2Arr());
+			const sheet3 = XLSX.utils.aoa_to_sheet(this.localStorageCoData2Arr());
 			let fileName = 'True_Talent_Data_';
 			const timeObj = new Date();
 			fileName += timeObj.getFullYear() + addZero(timeObj.getMonth()+1) + addZero(timeObj.getDate()) + '_';
 			fileName += addZero(timeObj.getHours()) + addZero(timeObj.getMinutes()) + addZero(timeObj.getSeconds()) + '.xlsx';
-			openDownloadDialog(sheet2blob([sheet1]), fileName);
+			openDownloadDialog(sheet2blob([sheet1,sheet2,sheet3]), fileName);
 		},
 
 		localStorage2Arr: function () {
@@ -222,6 +249,31 @@ let vm = new Vue({
 					this.stateCol.recLetterState[data[i].recLetterState],
 					data[i].recTime, data[i].income, this.stateCol.paymentState[data[i].paymentState],
 					data[i].cost, data[i].remark
+				];
+			}
+			//console.log(arr);
+			return arr;
+		},
+
+		localStorageCoData2Arr: function () {
+			const data = JSON.parse(localStorage.getItem('coData'));
+			const arr = [];
+			arr[0] = ['编号', '企业名称', '备注'];
+			for (let i=0;i<data.length;i++) {
+				arr[i+1] = [data[i].id, data[i].coName, data[i].remark];
+			}
+			//console.log(arr);
+			return arr;
+		},
+
+		localStorageTutorData2Arr: function () {
+			const data = JSON.parse(localStorage.getItem('tutorData'));
+			const arr = [];
+			arr[0] = ['编号', '导师姓名', '企业名称', '导师职位', '合作价格', '支出', '最大同时授课', '备注'];
+			for (let i=0;i<data.length;i++) {
+				arr[i+1] = [
+					data[i].id, data[i].tutorName, data[i].coName, data[i].tutorClass,
+					data[i].income, data[i].cost, data[i].maxRece, data[i].remark
 				];
 			}
 			//console.log(arr);
