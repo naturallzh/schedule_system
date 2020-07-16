@@ -3,6 +3,8 @@ let vm = new Vue({
 	data: {
 		loadingMask: true,
 
+		stateCol: {},
+
 		hasData: false,
 		able2Import: true,		// 每次打开浏览器只允许导入一次excel，再次导入需要刷新页面
 		able2StoreData: true,	// 每次打开浏览器只允许覆写一次localStorage，再次覆写需要刷新页面
@@ -44,6 +46,7 @@ let vm = new Vue({
 
 		init: function () {
 			this.loadingMask = false;
+			this.stateCol = DATA_stateCol;
 
 			this.checkLocalStorage();
 
@@ -195,16 +198,30 @@ let vm = new Vue({
 		},
 
 		exportFile: function () {
-			this.localStorage2Arr();
-
-			return;
-			const aoa = [];
+			const aoa = this.localStorage2Arr();
 			const sheet = XLSX.utils.aoa_to_sheet(aoa);
 			openDownloadDialog(sheet2blob(sheet), '导出.xlsx');
 		},
 
 		localStorage2Arr: function () {
 			const data = JSON.parse(localStorage.getItem('dataArr'));
+			const arr = [];
+			arr[0] = [
+				'编号', '新增时间', '学生姓名', '企业名称', '导师姓名', '导师职位', '实习进度',
+				'沟通时间', '推荐信', '签发时间', '合作价格', '付款情况', '支出', '备注'
+			];
+			for (let i=0;i<data.length;i++) {
+				arr[i+1] = [
+					data[i].id, data[i].createTime, data[i].stuName,
+					data[i].coName, data[i].tutorName, data[i].tutorClass,
+					data[i].progress+'/'+data[i].maxProgress, data[i].meetTime,
+					this.stateCol.recLetterState[data[i].recLetterState],
+					data[i].recTime, data[i].income, this.stateCol.paymentState[data[i].paymentState],
+					data[i].cost, data[i].remark
+				];
+			}
+			//console.log(arr);
+			return arr;
 		},
 
 		checkLocalStorage: checkLocalStorage,
