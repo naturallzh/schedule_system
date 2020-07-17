@@ -6,6 +6,9 @@ let vm = new Vue({
 		tutorDetailIdx: -1,
 		tutorDetailKeyMap: [],
 
+		showScheduleIdx: [-1, -1],
+		showPrepareIdx: [-1, -1],
+
 		scheduleStartTime: '',	// 排期区间的起始时间
 		scheduleEndTime: '',	// 排期区间的结束时间
 		scheduleArr: [],			// 用于图形化显示排班的数组
@@ -233,6 +236,13 @@ let vm = new Vue({
 		},
 		timestampShift: function (timestamp, n) {
 			return this.dateObj2timestamp(this.dateObjShift(this.timestamp2dateObj(timestamp), n));
+		},
+
+		showScheduleDetail: function (arr) {
+			this.showScheduleIdx = arr;
+		},
+		showPrepareDetail: function (arr) {
+			this.showPrepareIdx = arr;
 		},
 
 		getTutorIdx: function (str) {

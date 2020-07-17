@@ -12,7 +12,7 @@
 </head>
 
 <body>
-<div id="tutor-schedule-body" v-cloak @mouseover="">
+<div id="tutor-schedule-body" v-cloak @mouseover="showScheduleDetail([-1,-1]);showPrepareDetail([-1,-1])">
 
   <transition name="showMask">
     <div class="loadingMask" v-if="loadingMask">
@@ -40,13 +40,19 @@
       <div class="single-box" style="width: 180px">{{tableItem.tutorClass}}</div>
       <div class="bar-box">
         <div class="upper-box">
-          <div class="bar-item" v-for="(barItem, barIdx) in scheduleArr[tableIdx]" :style="barItem.styleStr">
+          <div class="bar-item" v-for="(barItem, barIdx) in scheduleArr[tableIdx]" :style="barItem.styleStr" @mouseover.stop="showScheduleDetail([tableIdx, barIdx])">
             {{barItem.nameArr.length}}人 {{barItem.dayNum}}天
+            <div class="detail-box" v-if="barItem.nameArr.length>0 && showScheduleIdx[0]===tableIdx && showScheduleIdx[1]===barIdx">
+              <div v-for="(nameItem, nameIdx) in barItem.nameArr">{{nameItem}}</div>
+            </div>
           </div>
         </div>
         <div class="lower-box">
-          <div class="bar-item" v-for="(barItem, barIdx) in prepareArr[tableIdx]" :style="barItem.styleStr">
+          <div class="bar-item" v-for="(barItem, barIdx) in prepareArr[tableIdx]" :style="barItem.styleStr" @mouseover.stop="showPrepareDetail([tableIdx, barIdx])">
             {{barItem.nameArr.length}}人 {{barItem.dayNum}}天
+            <div class="detail-box" v-if="barItem.nameArr.length>0 && showPrepareIdx[0]===tableIdx && showPrepareIdx[1]===barIdx">
+              <div v-for="(nameItem, nameIdx) in barItem.nameArr">{{nameItem}}</div>
+            </div>
           </div>
         </div>
       </div>
