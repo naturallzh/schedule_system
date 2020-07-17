@@ -169,7 +169,13 @@ let vm = new Vue({
 		openApproveDataWin: function () {this.popupFlag.approveWin = true;},
 		closeApproveDataWin: function () {this.popupFlag.approveWin = false;},
 		approveData: function () {
-			const dataArr = JSON.stringify(this.dataArr);
+			let dataArr = [];
+			for (let i=0;i<this.dataArr.length;i++) {
+				if (this.dataArr[i].remark==='delete') {continue}
+				dataArr.push(this.dataArr[i]);
+			}
+			this.dataArr = dataArr;
+			dataArr = JSON.stringify(dataArr);
 			localStorage.setItem('dataArr', dataArr);
 			this.closeApproveDataWin();
 		},

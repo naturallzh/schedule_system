@@ -110,7 +110,13 @@ let vm = new Vue({
 		openApproveCoDataWin: function () {this.popupFlag.approveWin = true;},
 		closeApproveCoDataWin: function () {this.popupFlag.approveWin = false;},
 		approveCoData: function () {
-			const coData = JSON.stringify(this.dataArr);
+			let coData = [];
+			for (let i=0;i<this.dataArr.length;i++) {
+				if (this.dataArr[i].remark==='delete') {continue}
+				coData.push(this.dataArr[i]);
+			}
+			this.dataArr = coData;
+			coData = JSON.stringify(coData);
 			localStorage.setItem('coData', coData);
 			this.closeApproveCoDataWin();
 		},

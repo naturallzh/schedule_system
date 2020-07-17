@@ -123,7 +123,13 @@ let vm = new Vue({
 		openApproveTutorDataWin: function () {this.popupFlag.approveWin = true;},
 		closeApproveTutorDataWin: function () {this.popupFlag.approveWin = false;},
 		approveTutorData: function () {
-			const tutorData = JSON.stringify(this.dataArr);
+			let tutorData = [];
+			for (let i=0;i<this.dataArr.length;i++) {
+				if (this.dataArr[i].remark==='delete') {continue}
+				tutorData.push(this.dataArr[i]);
+			}
+			this.dataArr = tutorData;
+			tutorData = JSON.stringify(tutorData);
 			localStorage.setItem('tutorData', tutorData);
 			this.closeApproveTutorDataWin();
 		},

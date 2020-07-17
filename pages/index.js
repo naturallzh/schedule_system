@@ -294,14 +294,8 @@ let vm = new Vue({
 				'编号', '新增时间', '学生姓名', '企业名称', '导师姓名', '导师职位', '实习进度',
 				'沟通时间', '推荐信', '签发时间', '合作价格', '付款情况', '支出', '备注'
 			];
-			let t = 1; // 导出数组和原数组的距离差，因为导出数组有表头，所以初始为1
-			// 原数组每删除一个，距离-1，即t--
 			for (let i=0;i<data.length;i++) {
-				if (data[i].remark === 'delete') {
-					t--;
-					continue;
-				}
-				arr[i+t] = [
+				arr[i+1] = [
 					data[i].id, data[i].createTime, data[i].stuName,
 					data[i].coName, data[i].tutorName, data[i].tutorClass,
 					data[i].progress+'/'+data[i].maxProgress, data[i].meetTime,
@@ -318,14 +312,8 @@ let vm = new Vue({
 			const data = JSON.parse(localStorage.getItem('coData'));
 			const arr = [];
 			arr[0] = ['编号', '企业名称', '备注'];
-			let t = 1; // 导出数组和原数组的距离差，因为导出数组有表头，所以初始为1
-			// 原数组每删除一个，距离-1，即t--
 			for (let i=0;i<data.length;i++) {
-				if (data[i].remark === 'delete') {
-					t--;
-					continue;
-				}
-				arr[i+t] = [data[i].id, data[i].coName, data[i].remark];
+				arr[i+1] = [data[i].id, data[i].coName, data[i].remark];
 			}
 			//console.log(arr);
 			return arr;
@@ -335,14 +323,8 @@ let vm = new Vue({
 			const data = JSON.parse(localStorage.getItem('tutorData'));
 			const arr = [];
 			arr[0] = ['编号', '导师姓名', '企业名称', '导师职位', '合作价格', '支出', '最大同时授课', '备注'];
-			let t = 1; // 导出数组和原数组的距离差，因为导出数组有表头，所以初始为1
-			// 原数组每删除一个，距离-1，即t--
 			for (let i=0;i<data.length;i++) {
-				if (data[i].remark === 'delete') {
-					t--;
-					continue;
-				}
-				arr[i+t] = [
+				arr[i+1] = [
 					data[i].id, data[i].tutorName, data[i].coName, data[i].tutorClass,
 					data[i].income, data[i].cost, data[i].maxRece, data[i].remark
 				];
