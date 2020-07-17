@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <link rel="shortcut icon" href="../favicon.ico">
+  <link rel="stylesheet" type="text/css" href="../../lib/init.css"/>
+  <link rel="stylesheet" type="text/css" href="../../lib/base.css"/>
+
+  <link rel="stylesheet" type="text/css" href="tutor_schedule.css"/>
+</head>
+
+<body>
+<div id="tutor-schedule-body" v-cloak @mouseover="highLightItem(-1);showRemark(-1)">
+
+  <transition name="showMask">
+    <div class="loadingMask" v-if="loadingMask">
+      <div class="circle-image-1"></div>
+      <div class="circle-image-2"></div>
+      <div class="title">
+        载入中<span class="dot-1">.</span><span class="dot-2">.</span><span class="dot-3">.</span>
+      </div>
+      <span class="desc">初次载入可能较慢 请耐心等待</span>
+      <span class="desc">如长时间没有响应 可ctrl+f5强制刷新页面</span>
+    </div>
+  </transition>
+
+  <div class="table-body" id="table-body">
+    <div class="table-header">
+      <div class="single-box" style="width: 80px">导师姓名</div>
+      <div class="single-box" style="width: 110px">企业名称</div>
+      <div class="single-box" style="width: 180px">导师职位</div>
+    </div>
+    <div class="table-item" v-for="(tableItem,tableIdx) in tutorData">
+      <div class="single-box" style="width: 80px" @click="openTutorDetail(tableIdx)">{{tableItem.tutorName}}</div>
+      <div class="single-box" style="width: 110px">{{tableItem.coName}}</div>
+      <div class="single-box" style="width: 180px">{{tableItem.tutorClass}}</div>
+    </div>
+    <div class="table-footer" style="display:none;">
+    </div>
+  </div>
+
+  <transition name="showMask">
+    <div class="popup-bg" v-if="popupFlag.tutorDetailWin" @click="closeTutorDetail()">
+      <div class="mod-table-item-win" @click.stop>
+        <div class="sub-box" v-for="(tutorDetailKeyMapItem, tutorDetailKeyMapIdx) in tutorDetailKeyMap">
+          <div class="left">{{tutorDetailKeyMapItem.name}}</div>
+          <div class="right">{{tutorData[tutorDetailIdx][tutorDetailKeyMapItem.key]}}</div>
+        </div>
+      </div>
+    </div>
+  </transition>
+
+
+  <transition name="showMask">
+    <div class="popup-bg" v-if="popupFlag.resetWin" @click="">
+      <div class="dialog-win" @click.stop>
+        <div class="upper-box">
+          <div class="text">即将重置浏览器中存储的企业数据为默认数据</div>
+          <div class="text">请提前导出excel做好备份</div>
+        </div>
+        <div class="lower-box">
+          <div class="btn cancel-btn" @click="">取消</div>
+          <div class="btn confirm-btn" @click="">确定</div>
+        </div>
+      </div>
+    </div>
+  </transition>
+
+
+</div>
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script type="text/javascript" src="../../lib/base.js"></script>
+
+<script type="text/javascript" src="../data.js"></script>
+<script type="text/javascript" src="tutor_schedule.js"></script>
+</html>

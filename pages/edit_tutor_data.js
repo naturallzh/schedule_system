@@ -162,6 +162,5 @@ let vm = new Vue({
 			this.showRemarkIdx = idx;
 		},
 
-		addZero: addZero,
 	}
 });

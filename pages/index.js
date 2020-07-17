@@ -264,16 +264,13 @@ let vm = new Vue({
 		},
 
 		gotoEdit: function () {
-			let url = "edit_data.html";
-			window.open(url);
+			let url = "edit_data.html";window.open(url);
 		},
 		gotoEditTutor: function () {
-			let url = "edit_tutor_data.html";
-			window.open(url);
+			let url = "edit_tutor_data.html";window.open(url);
 		},
 		gotoEditCo: function () {
-			let url = "edit_co_data.html";
-			window.open(url);
+			let url = "edit_co_data.html";window.open(url);
 		},
 
 		exportFile: function () {
@@ -333,7 +330,10 @@ let vm = new Vue({
 			return arr;
 		},
 
+		gotoTutorSchedule: function () {
+			let url = "data_view/tutor_schedule.html";window.open(url);
+		},
+
 		checkLocalStorage: checkLocalStorage,
-		addZero: addZero,
 	}
 });

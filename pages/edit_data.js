@@ -199,6 +199,5 @@ let vm = new Vue({
 		},
 
 		checkLocalStorage: checkLocalStorage,
-		addZero: addZero,
 	}
 });

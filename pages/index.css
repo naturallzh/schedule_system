@@ -20,11 +20,16 @@ html, body {
     border: 1px solid grey;
     box-shadow: 5px 5px 5px black;
     position: relative; }
+    #index-body .subarea-box h2 {
+      margin-bottom: 5px; }
+    #index-body .subarea-box .btn-large {
+      height: 30px;
+      margin: 5px 0; }
     #index-body .subarea-box .modify-mask {
       width: 90%;
       height: 120px;
       position: absolute;
-      top: 40px;
+      top: 77px;
       left: 5%;
       background: rgba(128, 128, 128, 0.7);
       display: flex;

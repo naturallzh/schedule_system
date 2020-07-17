@@ -29,26 +29,33 @@
   <input type="file" id="excel-file" style="display: none" />
 
   <div class="subarea-box">
+    <h2>浏览器数据控制</h2>
     <div class="modify-mask" @click.stop="openModMaskWin()" v-if="able2ModMask">封 印</div>
     当前浏览器是否存有相关数据：{{hasData?'是':'否'}}
-    <div class="btn" style="height: 30px;margin: 5px 0" @click="clickImportFile()">
+    <div class="btn btn-large" @click="clickImportFile()">
       {{able2Import?'导入excel':'如需再次导入请刷新页面'}}
     </div>
-    <div class="btn" style="height: 30px;margin: 5px 0" @click="openImportWin()">
+    <div class="btn btn-large" @click="openImportWin()">
       {{able2StoreData?'覆写浏览器存储':'如需再次覆写请刷新页面'}}
     </div>
-    <div class="btn" style="height: 30px;margin: 5px 0;background: red" @click="openRemoveWin()">
+    <div class="btn btn-large" style="background: red" @click="openRemoveWin()">
       {{able2RemoveData?'清除浏览器存储 !!慎重!!':'如需再次清除请刷新页面'}}
     </div>
-		<div class="btn" style="height: 30px;margin: 5px 0" @click="exportFile()">
+		<div class="btn btn-large" @click="exportFile()">
 			导出excel
 		</div>
   </div>
 
   <div class="subarea-box" style="overflow: auto">
-    <div class="btn" style="height: 30px;margin: 5px 0" @click="gotoEdit()">编辑报表数据</div>
-    <div class="btn" style="height: 30px;margin: 5px 0" @click="gotoEditTutor()">编辑导师数据</div>
-    <div class="btn" style="height: 30px;margin: 5px 0" @click="gotoEditCo()">编辑企业数据</div>
+    <h2>数据统计可视化</h2>
+    <div class="btn btn-large" @click="gotoTutorSchedule()">导师排期一览</div>
+  </div>
+
+  <div class="subarea-box" style="overflow: auto">
+    <h2>数据编辑</h2>
+    <div class="btn btn-large" @click="gotoEdit()">编辑报表数据</div>
+    <div class="btn btn-large" @click="gotoEditTutor()">编辑导师数据</div>
+    <div class="btn btn-large" @click="gotoEditCo()">编辑企业数据</div>
   </div>
 
   <transition name="showMask">
