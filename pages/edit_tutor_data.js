@@ -144,6 +144,7 @@ let vm = new Vue({
 		modifiedBgStr : function (itemIdx, keyName) {
 			const oriData = JSON.parse(localStorage.getItem('tutorData'))[itemIdx];
 			const curData = this.dataArr[itemIdx];
+			if (curData.remark === 'delete') {return 'background: red';}
 			if (!oriData) {return 'background: yellow';}
 			if (oriData[keyName] !== curData[keyName]) {
 				return 'background: yellow';

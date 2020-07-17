@@ -20,6 +20,8 @@ let vm = new Vue({
 		},
 
 		dataArr: null,
+		tutorData: null,
+		coData: null,
 	},
 
 	beforeCreate () {
@@ -78,9 +80,11 @@ let vm = new Vue({
 					const dataArr = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
 					if (wb.SheetNames[1]) {
 						const tutorData = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[1]]);
+						vm.tutorData = tutorData;
 					}
 					if (wb.SheetNames[2]) {
 						const coData = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[2]]);
+						vm.coData = coData;
 					}
 
 					vm.dataArr = dataArr;
@@ -101,12 +105,25 @@ let vm = new Vue({
 
 		storeData2Local: function () {
 			if (this.dataArr) {
+				// 写入报表数据
 				let dataArr = this.processImportData(this.dataArr);
 				this.dataArr = dataArr;
-
 				dataArr = JSON.stringify(this.dataArr);
 				localStorage.setItem('dataArr', dataArr);
 				this.hasData = true;
+
+				// 写入导师数据
+				let tutorData = this.processImportTutorData(this.tutorData);
+				this.tutorData = tutorData;
+				tutorData = JSON.stringify(this.tutorData);
+				localStorage.setItem('tutorData', tutorData);
+
+				// 写入公司数据
+				let coData = this.processImportCoData(this.coData);
+				this.coData = coData;
+				coData = JSON.stringify(this.coData);
+				localStorage.setItem('coData', coData);
+
 				console.log('覆写浏览器存储成功 localStorage[0].stuName: ' + this.dataArr[0].stuName)
 				this.closeImportWin();
 				alert('覆写浏览器存储成功');
@@ -123,8 +140,10 @@ let vm = new Vue({
 			for (let i=0;i<dataArr.length;i++) {
 				if (!dataArr[i].新增时间) {break;}
 				outputArr[i] = {
-					id: 20200000+parseInt(dataArr[i].编号)+'',
-					createTime: (dataArr[i].新增时间).split('/')[0] + '-' + this.addZero((dataArr[i].新增时间).split('/')[1]) + '-' + this.addZero((dataArr[i].新增时间).split('/')[2]),
+					// id: 20200000+parseInt(dataArr[i].编号)+'',
+					id: dataArr[i].编号+'',
+					// createTime: (dataArr[i].新增时间).split('/')[0] + '-' + this.addZero((dataArr[i].新增时间).split('/')[1]) + '-' + this.addZero((dataArr[i].新增时间).split('/')[2]),
+					createTime: dataArr[i].新增时间,
 					stuName: dataArr[i].学生姓名,
 					coName: dataArr[i].企业名称,
 					tutorName: dataArr[i].导师姓名,
@@ -133,7 +152,8 @@ let vm = new Vue({
 					maxProgress: parseInt((dataArr[i].实习进度).split('/')[1]),
 					meetTime: dataArr[i].沟通时间?dataArr[i].沟通时间:'',
 					recLetterState: calcRecLetterState(dataArr[i].推荐信),	// 0未完成课程 1草拟中 2待签发 3已签发
-					recTime: dataArr[i].签发时间?(dataArr[i].签发时间).split('/')[0] + '-' + this.addZero((dataArr[i].签发时间).split('/')[1]) + '-' + this.addZero((dataArr[i].签发时间).split('/')[2]):'',
+					// recTime: dataArr[i].签发时间?(dataArr[i].签发时间).split('/')[0] + '-' + this.addZero((dataArr[i].签发时间).split('/')[1]) + '-' + this.addZero((dataArr[i].签发时间).split('/')[2]):'',
+					recTime: dataArr[i].签发时间?dataArr[i].签发时间:'',
 					income: parseInt(dataArr[i].合作价格),
 					paymentState: calcPaymentState(dataArr[i].付款情况), // 0未完成课程 1待支付 2已付清
 					cost: parseInt(dataArr[i].支出),
@@ -173,10 +193,43 @@ let vm = new Vue({
 
 		},
 
+		processImportTutorData: function (tutorData) {
+			const outputArr = [];
+			for (let i=0;i<tutorData.length;i++) {
+				outputArr[i] = {
+					id: tutorData[i].编号?tutorData[i].编号+'':'',
+					tutorName: tutorData[i].导师姓名,
+					coName: tutorData[i].企业名称,
+					tutorClass: tutorData[i].导师职位,
+					income: parseInt(tutorData[i].合作价格),
+					cost: parseInt(tutorData[i].支出),
+					maxRece: parseInt(tutorData[i].最大同时授课),
+					remark: tutorData[i].备注?tutorData[i].备注:''
+				}
+			}
+			// console.log(outputArr);
+			return outputArr;
+		},
+
+		processImportCoData: function (coData) {
+			const outputArr = [];
+			for (let i=0;i<coData.length;i++) {
+				outputArr[i] = {
+					id: coData[i].编号?coData[i].编号+'':'',
+					coName: coData[i].企业名称,
+					remark: coData[i].备注?coData[i].备注:''
+				}
+			}
+			// console.log(outputArr);
+			return outputArr;
+		},
+
 		removeStorage: function () {
 			if (this.inputRemoveCode === this.veriRemoveCode) {
 				// 清除localStorage存储
 				localStorage.removeItem("dataArr");
+				localStorage.removeItem("tutorData");
+				localStorage.removeItem("coData");
 				this.hasData = false;
 				console.log('清除浏览器存储成功');
 
@@ -241,8 +294,14 @@ let vm = new Vue({
 				'编号', '新增时间', '学生姓名', '企业名称', '导师姓名', '导师职位', '实习进度',
 				'沟通时间', '推荐信', '签发时间', '合作价格', '付款情况', '支出', '备注'
 			];
+			let t = 1; // 导出数组和原数组的距离差，因为导出数组有表头，所以初始为1
+			// 原数组每删除一个，距离-1，即t--
 			for (let i=0;i<data.length;i++) {
-				arr[i+1] = [
+				if (data[i].remark === 'delete') {
+					t--;
+					continue;
+				}
+				arr[i+t] = [
 					data[i].id, data[i].createTime, data[i].stuName,
 					data[i].coName, data[i].tutorName, data[i].tutorClass,
 					data[i].progress+'/'+data[i].maxProgress, data[i].meetTime,
@@ -259,8 +318,14 @@ let vm = new Vue({
 			const data = JSON.parse(localStorage.getItem('coData'));
 			const arr = [];
 			arr[0] = ['编号', '企业名称', '备注'];
+			let t = 1; // 导出数组和原数组的距离差，因为导出数组有表头，所以初始为1
+			// 原数组每删除一个，距离-1，即t--
 			for (let i=0;i<data.length;i++) {
-				arr[i+1] = [data[i].id, data[i].coName, data[i].remark];
+				if (data[i].remark === 'delete') {
+					t--;
+					continue;
+				}
+				arr[i+t] = [data[i].id, data[i].coName, data[i].remark];
 			}
 			//console.log(arr);
 			return arr;
@@ -270,8 +335,14 @@ let vm = new Vue({
 			const data = JSON.parse(localStorage.getItem('tutorData'));
 			const arr = [];
 			arr[0] = ['编号', '导师姓名', '企业名称', '导师职位', '合作价格', '支出', '最大同时授课', '备注'];
+			let t = 1; // 导出数组和原数组的距离差，因为导出数组有表头，所以初始为1
+			// 原数组每删除一个，距离-1，即t--
 			for (let i=0;i<data.length;i++) {
-				arr[i+1] = [
+				if (data[i].remark === 'delete') {
+					t--;
+					continue;
+				}
+				arr[i+t] = [
 					data[i].id, data[i].tutorName, data[i].coName, data[i].tutorClass,
 					data[i].income, data[i].cost, data[i].maxRece, data[i].remark
 				];

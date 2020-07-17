@@ -46,7 +46,7 @@
       <div class="single-box" style="width: 60px" :style="modifiedBgStr(tableIdx,'cost')">{{tableItem.cost}}</div>
       <div class="single-box" style="width: 100px" :style="modifiedBgStr(tableIdx,'maxRece')">{{tableItem.maxRece}}</div>
       <div class="single-box" style="width: 45px" :style="modifiedBgStr(tableIdx,'remark')">
-				<div @mouseover.stop="showRemark(tableIdx)">{{tableItem.remark?'查看':''}}</div>
+				<div @mouseover.stop="showRemark(tableIdx)">{{tableItem.remark?(tableItem.remark==='delete'?'删除':'查看'):''}}</div>
 				<div class="remark-box" v-if="showRemarkIdx===tableIdx">{{tableItem.remark}}</div>
 			</div>
       <div class="btn" style="margin-left: 10px;padding: 0 3px" @click="openModTableItemWin(tableIdx)" @mouseover.stop="highLightItem(tableIdx)">编辑</div>

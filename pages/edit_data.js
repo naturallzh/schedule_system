@@ -16,6 +16,7 @@ let vm = new Vue({
 
 		popupFlag: {
 			modifyWin: false,
+			approveWin: false,
 		},
 
 		dataArr: null,
@@ -164,12 +165,22 @@ let vm = new Vue({
 		},
 		closeModTableItemWin: function () {this.popupFlag.modifyWin = false;},
 
+		// 提交修改至localStorage
+		openApproveDataWin: function () {this.popupFlag.approveWin = true;},
+		closeApproveDataWin: function () {this.popupFlag.approveWin = false;},
+		approveData: function () {
+			const dataArr = JSON.stringify(this.dataArr);
+			localStorage.setItem('dataArr', dataArr);
+			this.closeApproveDataWin();
+		},
+
 		// 高亮鼠标滑过的条目
 		highLightItem: function (idx) {this.highLightIdx = idx},
 		// 对比修改过的单元格 bg变黄
 		modifiedBgStr : function (itemIdx, keyName) {
 			const oriData = JSON.parse(localStorage.getItem('dataArr'))[itemIdx];
 			const curData = this.dataArr[itemIdx];
+			if (curData.remark === 'delete') {return 'background: red';}
 			if (!oriData) {return 'background: yellow';}
 			if (oriData[keyName] !== curData[keyName]) {
 				return 'background: yellow';
