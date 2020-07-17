@@ -12,7 +12,7 @@
 </head>
 
 <body>
-<div id="tutor-schedule-body" v-cloak @mouseover="highLightItem(-1);showRemark(-1)">
+<div id="tutor-schedule-body" v-cloak @mouseover="">
 
   <transition name="showMask">
     <div class="loadingMask" v-if="loadingMask">
@@ -31,11 +31,18 @@
       <div class="single-box" style="width: 80px">导师姓名</div>
       <div class="single-box" style="width: 110px">企业名称</div>
       <div class="single-box" style="width: 180px">导师职位</div>
+      <input class="" type="date" v-model="scheduleStartTime" @change="startTimeChange()"/>
+      <input class="" type="date" v-model="scheduleEndTime" @change="endTimeChange()"/>
     </div>
     <div class="table-item" v-for="(tableItem,tableIdx) in tutorData">
       <div class="single-box" style="width: 80px" @click="openTutorDetail(tableIdx)">{{tableItem.tutorName}}</div>
       <div class="single-box" style="width: 110px">{{tableItem.coName}}</div>
       <div class="single-box" style="width: 180px">{{tableItem.tutorClass}}</div>
+      <div class="bar-box">
+        <div class="bar-item" v-for="(barItem, barIdx) in scheduleArr[tableIdx]" :style="'width:'+barItem.dayNum/barItem.totalLen*100+'%'">
+          {{barItem.nameArr.length}}人 {{barItem.dayNum}}天
+        </div>
+      </div>
     </div>
     <div class="table-footer" style="display:none;">
     </div>

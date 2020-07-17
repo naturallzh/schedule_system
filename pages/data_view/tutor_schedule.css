@@ -32,7 +32,10 @@ html, body {
       padding: 3px;
       border: 1px solid black;
       border-left: 0;
-      text-align: center; }
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center; }
     #tutor-schedule-body .table-header .single-box:first-child {
       border-left: 1px solid black; }
   #tutor-schedule-body .table-footer {
@@ -48,7 +51,7 @@ html, body {
     box-sizing: border-box;
     padding: 10px 0; }
   #tutor-schedule-body .table-body {
-    margin: 40px 0 50px;
+    margin: 50px 0 0 0;
     width: 100%;
     box-sizing: border-box;
     display: flex;
@@ -56,23 +59,28 @@ html, body {
     #tutor-schedule-body .table-body .table-item {
       display: flex;
       margin: 3px 0; }
-      #tutor-schedule-body .table-body .table-item .single-box {
-        position: relative;
+      #tutor-schedule-body .table-body .table-item .single-box, #tutor-schedule-body .table-body .table-item .bar-box {
         background: white;
-        min-width: 30px;
         padding: 3px;
         border: 1px solid black;
         border-left: 0;
-        text-align: center; }
-        #tutor-schedule-body .table-body .table-item .single-box .remark-box {
-          width: 200px;
-          height: 70px;
-          background: #ffedc3;
-          position: absolute;
-          left: 60px;
-          top: -3px; }
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center; }
       #tutor-schedule-body .table-body .table-item .single-box:first-child {
         border-left: 1px solid black; }
+      #tutor-schedule-body .table-body .table-item .bar-box {
+        flex-grow: 1;
+        display: flex; }
+        #tutor-schedule-body .table-body .table-item .bar-box .bar-item {
+          height: 20px;
+          background: green;
+          border: 1px solid black;
+          box-sizing: border-box;
+          display: flex;
+          align-items: center;
+          justify-content: flex-start; }
   #tutor-schedule-body .mod-table-item-win {
     display: flex;
     flex-direction: column;
