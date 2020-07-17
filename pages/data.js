@@ -36,7 +36,7 @@ const DATA_tableHeaderMap = {
 	progress: '当前进度',
 	maxProgress: '总进度',
 	meetTime: '沟通时间',			// 预计下一次见面沟通的时间
-	recLetterState: '推荐信',	// 0未完成课程 1草拟中 2待签发 3已签发
+	recLetterState: '推荐信',	// 0未完成课程 1草拟中 2修改中 3待签发 4已签发
 	recTime: '签发时间',
 	income: '合作价格',
 	paymentState: '付款情况', // 0未完成课程 1待支付 2已付清
@@ -45,6 +45,6 @@ const DATA_tableHeaderMap = {
 };
 
 const DATA_stateCol = {
-	recLetterState: ['','草拟中','待签发','已签发'],
+	recLetterState: ['','草拟中','修改中','待签发','已签发'],
 	paymentState: ['','待支付','已付清'],
 };

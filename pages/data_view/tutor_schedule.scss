@@ -70,7 +70,7 @@ html, body {
 				padding: 3px;
 				border: 1px solid black;
 				border-left: 0;
-				height: 30px;
+				height: 50px;
 				display: flex;
 				align-items: center;
 				justify-content: center;
@@ -81,14 +81,20 @@ html, body {
 			.bar-box {
 				flex-grow: 1;
 				display: flex;
-				.bar-item {
-					height: 20px;
-					background: green;
-					border: 1px solid black;
-					box-sizing: border-box;
+				flex-direction: column;
+				justify-content: space-between;
+				.upper-box, .lower-box {
 					display: flex;
-					align-items: center;
-					justify-content: flex-start;
+					width: 100%;
+					.bar-item {
+						height: 20px;
+						background: green;
+						border: 1px solid black;
+						box-sizing: border-box;
+						display: flex;
+						align-items: center;
+						justify-content: flex-start;
+					}
 				}
 			}
 		}

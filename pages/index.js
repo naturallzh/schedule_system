@@ -113,16 +113,20 @@ let vm = new Vue({
 				this.hasData = true;
 
 				// 写入导师数据
-				let tutorData = this.processImportTutorData(this.tutorData);
-				this.tutorData = tutorData;
-				tutorData = JSON.stringify(this.tutorData);
-				localStorage.setItem('tutorData', tutorData);
+				if (this.tutorData) {
+					let tutorData = this.processImportTutorData(this.tutorData);
+					this.tutorData = tutorData;
+					tutorData = JSON.stringify(this.tutorData);
+					localStorage.setItem('tutorData', tutorData);
+				}
 
 				// 写入公司数据
-				let coData = this.processImportCoData(this.coData);
-				this.coData = coData;
-				coData = JSON.stringify(this.coData);
-				localStorage.setItem('coData', coData);
+				if (this.coData) {
+					let coData = this.processImportCoData(this.coData);
+					this.coData = coData;
+					coData = JSON.stringify(this.coData);
+					localStorage.setItem('coData', coData);
+				}
 
 				console.log('覆写浏览器存储成功 localStorage[0].stuName: ' + this.dataArr[0].stuName)
 				this.closeImportWin();
@@ -142,7 +146,7 @@ let vm = new Vue({
 				outputArr[i] = {
 					// id: 20200000+parseInt(dataArr[i].编号)+'',
 					id: dataArr[i].编号+'',
-					// createTime: (dataArr[i].新增时间).split('/')[0] + '-' + this.addZero((dataArr[i].新增时间).split('/')[1]) + '-' + this.addZero((dataArr[i].新增时间).split('/')[2]),
+					// createTime: (dataArr[i].新增时间).split('/')[0] + '-' + addZero((dataArr[i].新增时间).split('/')[1]) + '-' + addZero((dataArr[i].新增时间).split('/')[2]),
 					createTime: dataArr[i].新增时间,
 					stuName: dataArr[i].学生姓名,
 					coName: dataArr[i].企业名称,
@@ -152,7 +156,7 @@ let vm = new Vue({
 					maxProgress: parseInt((dataArr[i].实习进度).split('/')[1]),
 					meetTime: dataArr[i].沟通时间?dataArr[i].沟通时间:'',
 					recLetterState: calcRecLetterState(dataArr[i].推荐信),	// 0未完成课程 1草拟中 2待签发 3已签发
-					// recTime: dataArr[i].签发时间?(dataArr[i].签发时间).split('/')[0] + '-' + this.addZero((dataArr[i].签发时间).split('/')[1]) + '-' + this.addZero((dataArr[i].签发时间).split('/')[2]):'',
+					// recTime: dataArr[i].签发时间?(dataArr[i].签发时间).split('/')[0] + '-' + addZero((dataArr[i].签发时间).split('/')[1]) + '-' + addZero((dataArr[i].签发时间).split('/')[2]):'',
 					recTime: dataArr[i].签发时间?dataArr[i].签发时间:'',
 					income: parseInt(dataArr[i].合作价格),
 					paymentState: calcPaymentState(dataArr[i].付款情况), // 0未完成课程 1待支付 2已付清
@@ -168,10 +172,12 @@ let vm = new Vue({
 				switch (str) {
 					case '草拟中':
 						return 1;
-					case '待签发':
+					case '修改中':
 						return 2;
-					case '已签发':
+					case '待签发':
 						return 3;
+					case '已签发':
+						return 4;
 					default:
 						alert('错误的字符串输入: ' + str);
 						break;

@@ -87,7 +87,7 @@ let vm = new Vue({
 				itemObj.recTime = '';
 				itemObj.paymentState = 0;
 			}
-			if (itemObj.recLetterState<=2) {
+			if (itemObj.recLetterState<=3) {
 				itemObj.recTime = '';
 			}
 			if (itemObj.progress>=4) {
@@ -112,7 +112,7 @@ let vm = new Vue({
 				[itemObj.stuName.length<1, '学生姓名输入有误'],
 				[itemObj.coName.length<1, '企业名称输入有误'],
 				[itemObj.tutorClass.length<1, '导师职位输入有误'],
-				[itemObj.recLetterState>2 && (itemObj.recTime.length<8), '签发时间输入有误'],
+				[itemObj.recLetterState>3 && (itemObj.recTime.length<8), '签发时间输入有误'],
 				[itemObj.income<1 || isNaN(itemObj.income), '合作价格输入有误'],
 				[itemObj.cost<1 || isNaN(itemObj.cost), '支出输入有误'],
 			];

@@ -64,7 +64,7 @@ html, body {
         padding: 3px;
         border: 1px solid black;
         border-left: 0;
-        height: 30px;
+        height: 50px;
         display: flex;
         align-items: center;
         justify-content: center; }
@@ -72,15 +72,20 @@ html, body {
         border-left: 1px solid black; }
       #tutor-schedule-body .table-body .table-item .bar-box {
         flex-grow: 1;
-        display: flex; }
-        #tutor-schedule-body .table-body .table-item .bar-box .bar-item {
-          height: 20px;
-          background: green;
-          border: 1px solid black;
-          box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between; }
+        #tutor-schedule-body .table-body .table-item .bar-box .upper-box, #tutor-schedule-body .table-body .table-item .bar-box .lower-box {
           display: flex;
-          align-items: center;
-          justify-content: flex-start; }
+          width: 100%; }
+          #tutor-schedule-body .table-body .table-item .bar-box .upper-box .bar-item, #tutor-schedule-body .table-body .table-item .bar-box .lower-box .bar-item {
+            height: 20px;
+            background: green;
+            border: 1px solid black;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start; }
   #tutor-schedule-body .mod-table-item-win {
     display: flex;
     flex-direction: column;

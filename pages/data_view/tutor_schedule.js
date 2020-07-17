@@ -9,6 +9,7 @@ let vm = new Vue({
 		scheduleStartTime: '',	// 排期区间的起始时间
 		scheduleEndTime: '',	// 排期区间的结束时间
 		scheduleArr: [],			// 用于图形化显示排班的数组
+		prepareArr: [],				// 0/4学生排班的数组
 
 		popupFlag: {
 			tutorDetailWin: false,
@@ -77,11 +78,13 @@ let vm = new Vue({
 			if (!this.checkDateLegal()) {
 				this.scheduleStartTime = this.scheduleEndTime;
 			}
+			this.processScheduleArr();
 		},
 		endTimeChange: function () {
 			if (!this.checkDateLegal()) {
 				this.scheduleEndTime = this.scheduleStartTime;
 			}
+			this.processScheduleArr();
 		},
 		checkDateLegal: function () {
 			const startTime = this.scheduleStartTime;
@@ -95,6 +98,7 @@ let vm = new Vue({
 		},
 
 		processScheduleArr: function () {
+			console.log(this.scheduleStartTime, this.scheduleEndTime);
 			const scheduleStartTimeObj = this.timestamp2dateObj(this.scheduleStartTime);
 			const scheduleEndTimeObj = this.timestamp2dateObj(this.scheduleEndTime);
 			const N = (scheduleEndTimeObj - scheduleStartTimeObj)/3600/1000/24 + 1;
@@ -103,31 +107,50 @@ let vm = new Vue({
 
 			// 初始化日程数组 本数组为中间过程对象 并非最终输出 三维数组 最小单位为当天该导师所授课学生名字的数组
 			const schedulerArr = [];
+			const prepareArr = [];
 			for (let i=0;i<tutorData.length;i++) {
 				schedulerArr[i] = [];
+				prepareArr[i] = [];
 				for (let j=0;j<N;j++) {
 					schedulerArr[i][j] = [];
+					prepareArr[i][j] = [];
 				}
 			}
 
 			for (let i=0;i<dataArr.length;i++) {
-				if (dataArr[i].meetTime.length<8) {continue}
+				if (dataArr[i].meetTime.length<8 && dataArr[i].meetTime.length>1) {continue}
 				const tutorIdx = this.getTutorIdx(dataArr[i].tutorName);
 				const dayLen = (dataArr[i].maxProgress - dataArr[i].progress -1) * 7;
-				let endTimeObj = this.timestamp2dateObj(this.timestampShift(dataArr[i].meetTime,dayLen));
-				if (endTimeObj < scheduleStartTimeObj) {continue}
+
+				let startTimeObj, endTimeObj;
+				// 已写好下次见面时间的情况
+				if (dataArr[i].meetTime.length>8) {
+					endTimeObj = this.timestamp2dateObj(this.timestampShift(dataArr[i].meetTime,dayLen));
+					if (endTimeObj < scheduleStartTimeObj) {continue}
+					startTimeObj = this.timestamp2dateObj(dataArr[i].meetTime);
+				}
+				// 未写明下次见面的时间 只存在于0/4 从明天开始顺推21天
+				else {
+					startTimeObj = this.dateObjShift(new Date(),1);
+					endTimeObj = this.dateObjShift(new Date(),22);
+				}
 				if (endTimeObj > scheduleEndTimeObj) {
 					endTimeObj = scheduleEndTimeObj;
 				}
-				let startTimeObj = this.timestamp2dateObj(dataArr[i].meetTime);
-				if (startTimeObj < scheduleEndTimeObj) {
+				if (startTimeObj < scheduleStartTimeObj) {
 					startTimeObj = scheduleStartTimeObj;
 				}
+
 				const startIdx = (startTimeObj-scheduleStartTimeObj)/3600/1000/24;
 				const endIdx = (endTimeObj-scheduleStartTimeObj)/3600/1000/24;
 
 				for (let j=startIdx;j<=endIdx;j++) {
-					schedulerArr[tutorIdx][j].push(dataArr[i].stuName);
+					if (dataArr[i].meetTime.length>8) {
+						schedulerArr[tutorIdx][j].push(dataArr[i].stuName);
+					}
+					else {
+						prepareArr[tutorIdx][j].push(dataArr[i].stuName);
+					}
 				}
 			}
 			//console.log(schedulerArr);
@@ -145,6 +168,8 @@ let vm = new Vue({
 						curObj.dayNum++
 					}
 					else {
+						curObj.styleStr = 'width:'+curObj.dayNum/curObj.totalLen*100+'%;';
+						curObj.styleStr += 'background:' + this.perc2color(1-curObj.nameArr.length/4);
 						outputArr[i].push(curObj);
 						curObj = {
 							dayNum: 1,
@@ -153,10 +178,41 @@ let vm = new Vue({
 						}
 					}
 				}
+				curObj.styleStr = 'width:'+curObj.dayNum/curObj.totalLen*100+'%;';
+				curObj.styleStr += 'background:' + this.perc2color(1-curObj.nameArr.length/4);
 				outputArr[i].push(curObj);
 			}
 			//console.log(outputArr)
 			this.scheduleArr = outputArr;
+
+			const outputArr1 = [];
+			for (let i=0;i<prepareArr.length;i++) {
+				outputArr1[i] = [];
+				let curObj = {
+					dayNum: 1,
+					totalLen: N,
+					nameArr: prepareArr[i][0]
+				};
+				for (let j=1;j<prepareArr[i].length;j++) {
+					if (this.compareArr(curObj.nameArr, prepareArr[i][j])) {
+						curObj.dayNum++
+					}
+					else {
+						curObj.styleStr = 'width:'+curObj.dayNum/curObj.totalLen*100+'%;';
+						curObj.styleStr += 'background:' + this.perc2color(1-curObj.nameArr.length/4);
+						outputArr1[i].push(curObj);
+						curObj = {
+							dayNum: 1,
+							totalLen: N,
+							nameArr: prepareArr[i][j]
+						}
+					}
+				}
+				curObj.styleStr = 'width:'+curObj.dayNum/curObj.totalLen*100+'%;';
+				curObj.styleStr += 'background:' + this.perc2color(1-curObj.nameArr.length/4);
+				outputArr1[i].push(curObj);
+			}
+			this.prepareArr = outputArr1;
 		},
 
 		openTutorDetail: function (idx) {this.popupFlag.tutorDetailWin = true;this.tutorDetailIdx = idx},
@@ -195,6 +251,23 @@ let vm = new Vue({
 				if (arr1[i]!==arr2[i]) {return false}
 			}
 			return true;
+		},
+
+		// 小数转rgb字符串 0=>red 1=>green 负数=>red
+		perc2color: function (perc) {
+			let rgbStr = "rgb(";
+			if (perc>=0.5) {
+				perc = (1-perc) * 2;
+				rgbStr += perc*255 + ",255,0)";
+			}
+			else if (perc>=0) {
+				perc = perc * 2;
+				rgbStr += "255," + perc*255 + ",0)";
+			}
+			else {
+				rgbStr += "255,0,0)";
+			}
+			return rgbStr;
 		}
 
 	}
