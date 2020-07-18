@@ -86,7 +86,7 @@
   <transition name="showMask">
     <div class="popup-bg" v-if="popupFlag.periodDetailWin" @click="closePeriodDetail()">
       <div class="mod-table-item-win" @click.stop>
-        <div class="sub-box" style="position:relative;" v-for="(periodDetailItem, periodDetailIdx) in (periodDetailIdx[0]===0?scheduleArr[periodDetailIdx[0]][periodDetailIdx[1]].nameArr:prepareArr[periodDetailIdx[0]][periodDetailIdx[1]].nameArr)">
+        <div class="sub-box" style="position:relative;" v-for="(periodDetailItem, periodDetailIdx) in (periodDetailIdx[2]===0?scheduleArr[periodDetailIdx[0]][periodDetailIdx[1]].nameArr:prepareArr[periodDetailIdx[0]][periodDetailIdx[1]].nameArr)">
           <div class="left">{{periodDetailItem.split(' ')[0]}}</div>
           <div class="right">{{periodDetailItem.split(' ')[1]}}</div>
           <div class="btn" style="position: absolute;left: 50%" @click="gotoEditOrder(periodDetailItem.split(' ')[1])">去编辑</div>
