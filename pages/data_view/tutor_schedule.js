@@ -295,11 +295,11 @@ let vm = new Vue({
 			}
 			else if (perc>=0.5) {
 				perc = (1-perc) * 2;
-				rgbStr += perc*255 + ",255,0)";
+				rgbStr += Math.floor(perc*255) + ",255,0)";
 			}
 			else if (perc>=0) {
 				perc = perc * 2;
-				rgbStr += "255," + perc*255 + ",0)";
+				rgbStr += "255," + Math.floor(perc*255) + ",0)";
 			}
 			else {
 				rgbStr += "255,0,0)";
