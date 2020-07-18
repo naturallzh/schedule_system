@@ -130,7 +130,8 @@ let vm = new Vue({
 				if (dataArr[i].meetTime.length>8) {
 					endTimeObj = this.timestamp2dateObj(this.timestampShift(dataArr[i].meetTime,dayLen));
 					if (endTimeObj < scheduleStartTimeObj) {continue}
-					startTimeObj = this.timestamp2dateObj(dataArr[i].meetTime);
+					// startTimeObj = this.timestamp2dateObj(dataArr[i].meetTime);
+					startTimeObj = this.dateObjShift(this.timestamp2dateObj(dataArr[i].meetTime),-7*dataArr[i].progress);
 				}
 				// 未写明下次见面的时间 只存在于0/4 从明天开始顺推21天
 				else {
@@ -266,7 +267,10 @@ let vm = new Vue({
 		// 小数转rgb字符串 0=>red 1=>green 负数=>red
 		perc2color: function (perc) {
 			let rgbStr = "rgb(";
-			if (perc>=0.5) {
+			if (perc===1) {
+				rgbStr = "lightblue";
+			}
+			else if (perc>=0.5) {
 				perc = (1-perc) * 2;
 				rgbStr += perc*255 + ",255,0)";
 			}

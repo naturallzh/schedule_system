@@ -11,7 +11,7 @@ html, body {
 #tutor-schedule-body {
   width: 100%;
   min-height: 100%;
-  background: #78c3ea;
+  background: gray;
   display: flex;
   justify-content: center;
   align-items: flex-start; }
@@ -57,12 +57,12 @@ html, body {
     display: flex;
     flex-direction: column; }
     #tutor-schedule-body .table-body .table-item {
-      display: flex;
-      margin: 3px 0; }
+      display: flex; }
       #tutor-schedule-body .table-body .table-item .single-box, #tutor-schedule-body .table-body .table-item .bar-box {
         background: white;
         padding: 3px;
         border: 1px solid black;
+        border-top: 0;
         border-left: 0;
         height: 50px;
         display: flex;
@@ -74,20 +74,23 @@ html, body {
         flex-grow: 1;
         display: flex;
         flex-direction: column;
-        justify-content: space-between; }
+        justify-content: space-around; }
         #tutor-schedule-body .table-body .table-item .bar-box .upper-box, #tutor-schedule-body .table-body .table-item .bar-box .lower-box {
           display: flex;
           width: 100%; }
           #tutor-schedule-body .table-body .table-item .bar-box .upper-box .bar-item, #tutor-schedule-body .table-body .table-item .bar-box .lower-box .bar-item {
-            height: 20px;
-            background: green;
-            border: 1px solid black;
+            height: 15px;
+            border-left: 1px solid black;
             box-sizing: border-box;
             display: flex;
             align-items: center;
             justify-content: flex-start;
-            position: relative; }
+            position: relative;
+            font-size: 10px; }
             #tutor-schedule-body .table-body .table-item .bar-box .upper-box .bar-item .detail-box, #tutor-schedule-body .table-body .table-item .bar-box .lower-box .bar-item .detail-box {
+              padding: 5px;
+              box-shadow: 0 0 20px black;
+              font-size: 16px;
               position: absolute;
               width: 100px;
               background: #ffedc3;
@@ -95,6 +98,8 @@ html, body {
               top: -3px;
               z-index: 10;
               border: 1px solid black; }
+          #tutor-schedule-body .table-body .table-item .bar-box .upper-box .bar-item:first-child, #tutor-schedule-body .table-body .table-item .bar-box .lower-box .bar-item:first-child {
+            border-left: 0; }
   #tutor-schedule-body .mod-table-item-win {
     display: flex;
     flex-direction: column;
