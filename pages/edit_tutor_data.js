@@ -29,6 +29,8 @@ let vm = new Vue({
 		// localStorage.removeItem("dataArr");
 
 		this.init();
+		const editTutorIdx = getQueryString('editTutorIdx');
+		if (editTutorIdx) {this.openModTableItemWin(editTutorIdx)}
 	},
 
 	/*

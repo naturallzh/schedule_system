@@ -32,6 +32,15 @@ let vm = new Vue({
 		// localStorage.removeItem("dataArr");
 
 		this.init();
+		const editOrderId = getQueryString('editOrderId');
+		if (editOrderId) {
+			for (let i=0;i<this.dataArr.length;i++) {
+				if (this.dataArr[i].id === editOrderId) {
+					this.openModTableItemWin(i);
+					break;
+				}
+			}
+		}
 	},
 
 	/*

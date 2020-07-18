@@ -98,6 +98,11 @@ html, body {
               top: -200px;
               z-index: 10;
               border: 1px solid black; }
+              #tutor-schedule-body .table-body .table-item .bar-box .upper-box .bar-item .detail-box .name-box, #tutor-schedule-body .table-body .table-item .bar-box .lower-box .bar-item .detail-box .name-box {
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                align-items: center; }
           #tutor-schedule-body .table-body .table-item .bar-box .upper-box .bar-item:first-child, #tutor-schedule-body .table-body .table-item .bar-box .lower-box .bar-item:first-child {
             border-left: 0; }
   #tutor-schedule-body .mod-table-item-win {
