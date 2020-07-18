@@ -7,6 +7,9 @@ let vm = new Vue({
 		tutorDetailKeyMap: [],
 		periodDetailIdx: [],		// 查看某一时间段的学生情况
 
+		tutorFilterName: '不过滤',
+		coFilterName: '不过滤',
+
 		showScheduleIdx: [-1, -1],
 		showPrepareIdx: [-1, -1],
 		mousePos: [0, 0],		// 鼠标位置
@@ -105,7 +108,7 @@ let vm = new Vue({
 		},
 
 		processScheduleArr: function () {
-			console.log(this.scheduleStartTime, this.scheduleEndTime);
+			// console.log(this.scheduleStartTime, this.scheduleEndTime);
 			const scheduleStartTimeObj = this.timestamp2dateObj(this.scheduleStartTime);
 			const scheduleEndTimeObj = this.timestamp2dateObj(this.scheduleEndTime);
 			const N = (scheduleEndTimeObj - scheduleStartTimeObj)/3600/1000/24 + 1;
