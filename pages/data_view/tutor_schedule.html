@@ -42,7 +42,8 @@
         <div class="upper-box">
           <div class="bar-item" v-for="(barItem, barIdx) in scheduleArr[tableIdx]" :style="barItem.styleStr" @mouseover.stop="showScheduleDetail([tableIdx, barIdx])">
             {{barItem.nameArr.length}}人 {{barItem.dayNum}}天
-            <div class="detail-box" v-if="barItem.nameArr.length>0 && showScheduleIdx[0]===tableIdx && showScheduleIdx[1]===barIdx" :style="'left:'+(mousePos[0]-120)+'px;top:'+mousePos[1]+'px'">
+            <div class="detail-box" v-if="barItem.nameArr.length>0 && showScheduleIdx[0]===tableIdx && showScheduleIdx[1]===barIdx" :style="'left:'+(mousePos[0]-240)+'px;top:'+mousePos[1]+'px'">
+              <div>{{barItem.startTimeStamp}} ~ {{barItem.endTimeStamp}}</div>
               <div v-for="(nameItem, nameIdx) in barItem.nameArr">{{nameItem}}</div>
             </div>
           </div>
@@ -50,7 +51,8 @@
         <div class="lower-box">
           <div class="bar-item" v-for="(barItem, barIdx) in prepareArr[tableIdx]" :style="barItem.styleStr" @mouseover.stop="showPrepareDetail([tableIdx, barIdx])">
             {{barItem.nameArr.length}}人 {{barItem.dayNum}}天
-            <div class="detail-box" v-if="barItem.nameArr.length>0 && showPrepareIdx[0]===tableIdx && showPrepareIdx[1]===barIdx" :style="'left:'+(mousePos[0]-120)+'px;top:'+mousePos[1]+'px'">
+            <div class="detail-box" v-if="barItem.nameArr.length>0 && showPrepareIdx[0]===tableIdx && showPrepareIdx[1]===barIdx" :style="'left:'+(mousePos[0]-240)+'px;top:'+mousePos[1]+'px'">
+              <div>{{barItem.startTimeStamp}} ~ {{barItem.endTimeStamp}}</div>
               <div v-for="(nameItem, nameIdx) in barItem.nameArr">{{nameItem}}</div>
             </div>
           </div>

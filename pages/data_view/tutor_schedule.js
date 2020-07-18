@@ -168,23 +168,27 @@ let vm = new Vue({
 				let curObj = {
 					dayNum: 1,
 					totalLen: N,
-					nameArr: schedulerArr[i][0]
+					nameArr: schedulerArr[i][0],
+					startTimeStamp: this.scheduleStartTime
 				};
 				for (let j=1;j<schedulerArr[i].length;j++) {
 					if (this.compareArr(curObj.nameArr, schedulerArr[i][j])) {
 						curObj.dayNum++
 					}
 					else {
+						curObj.endTimeStamp = this.timestampShift(this.scheduleStartTime,j-1);
 						curObj.styleStr = 'width:'+curObj.dayNum/curObj.totalLen*100+'%;';
 						curObj.styleStr += 'background:' + this.perc2color(1-curObj.nameArr.length/4);
 						outputArr[i].push(curObj);
 						curObj = {
 							dayNum: 1,
 							totalLen: N,
-							nameArr: schedulerArr[i][j]
+							nameArr: schedulerArr[i][j],
+							startTimeStamp: this.timestampShift(this.scheduleStartTime,j)
 						}
 					}
 				}
+				curObj.endTimeStamp = this.scheduleEndTime
 				curObj.styleStr = 'width:'+curObj.dayNum/curObj.totalLen*100+'%;';
 				curObj.styleStr += 'background:' + this.perc2color(1-curObj.nameArr.length/4);
 				outputArr[i].push(curObj);
@@ -198,23 +202,27 @@ let vm = new Vue({
 				let curObj = {
 					dayNum: 1,
 					totalLen: N,
-					nameArr: prepareArr[i][0]
+					nameArr: prepareArr[i][0],
+					startTimeStamp: this.scheduleStartTime
 				};
 				for (let j=1;j<prepareArr[i].length;j++) {
 					if (this.compareArr(curObj.nameArr, prepareArr[i][j])) {
 						curObj.dayNum++
 					}
 					else {
+						curObj.endTimeStamp = this.timestampShift(this.scheduleStartTime,j-1);
 						curObj.styleStr = 'width:'+curObj.dayNum/curObj.totalLen*100+'%;';
 						curObj.styleStr += 'background:' + this.perc2color(1-curObj.nameArr.length/4);
 						outputArr1[i].push(curObj);
 						curObj = {
 							dayNum: 1,
 							totalLen: N,
-							nameArr: prepareArr[i][j]
+							nameArr: prepareArr[i][j],
+							startTimeStamp: this.timestampShift(this.scheduleStartTime,j)
 						}
 					}
 				}
+				curObj.endTimeStamp = this.scheduleEndTime
 				curObj.styleStr = 'width:'+curObj.dayNum/curObj.totalLen*100+'%;';
 				curObj.styleStr += 'background:' + this.perc2color(1-curObj.nameArr.length/4);
 				outputArr1[i].push(curObj);
