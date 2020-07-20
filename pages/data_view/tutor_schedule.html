@@ -46,7 +46,7 @@
       <div class="single-box" style="width: 180px">{{tableItem.tutorClass}}</div>
       <div class="bar-box">
         <div class="upper-box">
-          <div class="bar-item" v-for="(barItem, barIdx) in scheduleArr[tableIdx]" :style="barItem.styleStr" @mouseover.stop="getScheduleDetailIdx([tableIdx, barIdx])" @click="openPeriodDetail([tableIdx, barIdx, 0])">
+          <div class="bar-item" v-for="(barItem, barIdx) in scheduleArr[tableIdx]" :style="barItem.styleStr" @mouseover.stop="getScheduleDetailIdx([tableIdx, barIdx])" @click="barItem.nameArr.length>0?openPeriodDetail([tableIdx, barIdx, 0]):''">
             {{barItem.nameArr.length}}人 {{barItem.dayNum}}天
             <div class="detail-box" v-if="showScheduleIdx[0]===tableIdx && showScheduleIdx[1]===barIdx" :style="'left:'+(mousePos[0]-240)+'px;top:'+mousePos[1]+'px'">
               <div style="margin-bottom: 3px">{{barItem.startTimeStamp}} ~ {{barItem.endTimeStamp}}</div>
@@ -58,7 +58,7 @@
           </div>
         </div>
         <div class="lower-box">
-          <div class="bar-item" v-for="(barItem, barIdx) in prepareArr[tableIdx]" :style="barItem.styleStr" @mouseover.stop="getPrepareDetailIdx([tableIdx, barIdx])" @click="openPeriodDetail([tableIdx, barIdx, 1])">
+          <div class="bar-item" v-for="(barItem, barIdx) in prepareArr[tableIdx]" :style="barItem.styleStr" @mouseover.stop="getPrepareDetailIdx([tableIdx, barIdx])" @click="barItem.nameArr.length>0?openPeriodDetail([tableIdx, barIdx, 1]):''">
             {{barItem.nameArr.length}}人 {{barItem.dayNum}}天
             <div class="detail-box" v-if="showPrepareIdx[0]===tableIdx && showPrepareIdx[1]===barIdx" :style="'left:'+(mousePos[0]-240)+'px;top:'+mousePos[1]+'px'">
               <div style="margin-bottom: 3px">{{barItem.startTimeStamp}} ~ {{barItem.endTimeStamp}}</div>
