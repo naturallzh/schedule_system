@@ -10,8 +10,8 @@ let vm = new Vue({
 		tutorFilterName: '不过滤',
 		coFilterName: '不过滤',
 
-		showScheduleIdx: [-1, -1],
-		showPrepareIdx: [-1, -1],
+		showScheduleIdx: [-1, -1],	// 鼠标悬停时显示正在上课时段的摘要情况
+		showPrepareIdx: [-1, -1],	// 鼠标悬停时显示等待开课时段的摘要情况
 		mousePos: [0, 0],		// 鼠标位置
 
 		scheduleStartTime: '',	// 排期区间的起始时间
@@ -130,7 +130,7 @@ let vm = new Vue({
 			for (let i=0;i<dataArr.length;i++) {
 				if (dataArr[i].meetTime.length<8 && dataArr[i].meetTime.length>1) {continue}
 				const tutorIdx = this.getTutorIdx(dataArr[i].tutorName);
-				const dayLen = (dataArr[i].maxProgress - dataArr[i].progress -1) * 7;
+				const dayLen = (dataArr[i].maxProgress - dataArr[i].progress) * 7;
 
 				let startTimeObj, endTimeObj;
 				// 已写好下次见面时间的情况
@@ -139,7 +139,7 @@ let vm = new Vue({
 					if (endTimeObj < scheduleStartTimeObj) {continue}
 					// startTimeObj = this.timestamp2dateObj(dataArr[i].meetTime);
 					// 也做向前推算
-					startTimeObj = this.dateObjShift(this.timestamp2dateObj(dataArr[i].meetTime),-7*dataArr[i].progress);
+					startTimeObj = this.dateObjShift(this.timestamp2dateObj(dataArr[i].meetTime),-7*dataArr[i].progress+7);
 				}
 				// 未写明下次见面的时间 只存在于0/4 从明天开始顺推21天
 				else {
@@ -262,10 +262,10 @@ let vm = new Vue({
 			return this.dateObj2timestamp(this.dateObjShift(this.timestamp2dateObj(timestamp), n));
 		},
 
-		showScheduleDetail: function (arr) {
+		getScheduleDetailIdx: function (arr) {
 			this.showScheduleIdx = arr;
 		},
-		showPrepareDetail: function (arr) {
+		getPrepareDetailIdx: function (arr) {
 			this.showPrepareIdx = arr;
 		},
 

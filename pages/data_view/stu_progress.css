@@ -1,0 +1,110 @@
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none; }
+
+input[type="number"] {
+  -moz-appearance: textfield; }
+
+html, body {
+  height: 100%; }
+
+#stu-progress-body {
+  width: 100%;
+  min-height: 100%;
+  background: gray;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; }
+  #stu-progress-body .table-header {
+    z-index: 2;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    width: 100%;
+    background: white;
+    box-shadow: 0 5px 7px black;
+    padding-top: 5px;
+    box-sizing: border-box; }
+    #stu-progress-body .table-header .single-box {
+      background: white;
+      min-width: 30px;
+      padding: 3px;
+      border: 1px solid black;
+      border-left: 0;
+      height: 30px;
+      width: 175px;
+      display: flex;
+      align-items: center;
+      justify-content: center; }
+    #stu-progress-body .table-header .single-box:first-child {
+      border-left: 1px solid black; }
+  #stu-progress-body .table-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+    background: white;
+    box-shadow: 0 -5px 7px black;
+    box-sizing: border-box;
+    padding: 10px 0; }
+  #stu-progress-body .table-body {
+    margin: 50px 0 0 0;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column; }
+    #stu-progress-body .table-body .table-item {
+      display: flex; }
+      #stu-progress-body .table-body .table-item .single-box {
+        width: 175px;
+        background: white;
+        padding: 3px;
+        border: 1px solid black;
+        border-top: 0;
+        border-left: 0;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        flex-wrap: wrap; }
+        #stu-progress-body .table-body .table-item .single-box .stu-btn {
+          margin: 3px;
+          min-width: 51px; }
+          #stu-progress-body .table-body .table-item .single-box .stu-btn .detail-box {
+            padding: 5px;
+            box-shadow: 0 0 20px black;
+            font-size: 16px;
+            position: fixed;
+            width: 220px;
+            color: black;
+            background: #ffedc3;
+            left: -200px;
+            top: -200px;
+            z-index: 10;
+            border: 1px solid black; }
+            #stu-progress-body .table-body .table-item .single-box .stu-btn .detail-box .name-box {
+              width: 100%;
+              display: flex;
+              justify-content: space-between;
+              align-items: center; }
+      #stu-progress-body .table-body .table-item .single-box:first-child {
+        border-left: 1px solid black; }
+  #stu-progress-body .mod-table-item-win {
+    display: flex;
+    flex-direction: column;
+    margin: 0 50px; }
+    #stu-progress-body .mod-table-item-win .sub-box {
+      height: 30px;
+      background: white;
+      width: 300px;
+      border: 1px solid black;
+      border-top: none;
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center; }
+    #stu-progress-body .mod-table-item-win .sub-box:first-child {
+      border-top: 1px solid black; }

@@ -336,6 +336,10 @@ let vm = new Vue({
 			return arr;
 		},
 
+		gotoStuProgress: function () {
+			let url = "data_view/stu_progress.html";window.open(url);
+		},
+
 		gotoTutorSchedule: function () {
 			let url = "data_view/tutor_schedule.html";window.open(url);
 		},

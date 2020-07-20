@@ -3,16 +3,16 @@
 
 <head>
   <meta charset="utf-8">
-  <title>导师排期一览表</title>
+  <title>导师进度一览表</title>
   <link rel="shortcut icon" href="../favicon.ico">
   <link rel="stylesheet" type="text/css" href="../../lib/init.css"/>
   <link rel="stylesheet" type="text/css" href="../../lib/base.css"/>
 
-  <link rel="stylesheet" type="text/css" href="tutor_schedule.css"/>
+  <link rel="stylesheet" type="text/css" href="stu_progress.css"/>
 </head>
 
 <body>
-<div id="tutor-schedule-body" v-cloak @mouseover="getScheduleDetailIdx([-1,-1]);getPrepareDetailIdx([-1,-1])">
+<div id="stu-progress-body" v-cloak @mouseover="getAbstractIdx([-1,-1,-1])">
 
   <transition name="showMask">
     <div class="loadingMask" v-if="loadingMask">
@@ -31,8 +31,14 @@
       <div class="single-box" style="width: 80px">导师姓名</div>
       <div class="single-box" style="width: 110px">企业名称</div>
       <div class="single-box" style="width: 180px">导师职位</div>
-      <input class="" type="date" v-model="scheduleStartTime" @change="startTimeChange()"/>
-      <input class="" type="date" v-model="scheduleEndTime" @change="endTimeChange()"/>
+      <div class="single-box">0/4</div>
+      <div class="single-box">1/4</div>
+      <div class="single-box">2/4</div>
+      <div class="single-box">3/4</div>
+      <div class="single-box">4/4</div>
+      <div class="single-box">历史已完成</div>
+      <!--      <input class="" type="date" v-model="scheduleStartTime" @change="startTimeChange()"/>-->
+      <!--      <input class="" type="date" v-model="scheduleEndTime" @change="endTimeChange()"/>-->
       <select v-model="tutorFilterName" v-if="tutorData">
         <option v-for="(tutorData, tutorIdx) in [{tutorName: '不过滤'}].concat(this.tutorData)" :value="tutorData.tutorName">{{tutorData.tutorName}}</option>
       </select>
@@ -44,28 +50,29 @@
       <div class="single-box" style="width: 80px" @click="openTutorDetail(tableIdx)">{{tableItem.tutorName}}</div>
       <div class="single-box" style="width: 110px">{{tableItem.coName}}</div>
       <div class="single-box" style="width: 180px">{{tableItem.tutorClass}}</div>
-      <div class="bar-box">
-        <div class="upper-box">
-          <div class="bar-item" v-for="(barItem, barIdx) in scheduleArr[tableIdx]" :style="barItem.styleStr" @mouseover.stop="getScheduleDetailIdx([tableIdx, barIdx])" @click="openPeriodDetail([tableIdx, barIdx, 0])">
-            {{barItem.nameArr.length}}人 {{barItem.dayNum}}天
-            <div class="detail-box" v-if="showScheduleIdx[0]===tableIdx && showScheduleIdx[1]===barIdx" :style="'left:'+(mousePos[0]-240)+'px;top:'+mousePos[1]+'px'">
-              <div style="margin-bottom: 3px">{{barItem.startTimeStamp}} ~ {{barItem.endTimeStamp}}</div>
-              <div class="name-box" v-for="(nameItem, nameIdx) in barItem.nameArr">
-                <div>{{nameItem.split(' ')[0]}}</div>
-                <div>{{nameItem.split(' ')[1]}}</div>
-              </div>
+      <div class="single-box" v-for="(progressItem,progressIdx) in progressArr[tableIdx].slice(0,5)">
+        <div class="btn stu-btn" v-for="(stuItem,stuIdx) in progressItem" :style="stuItem.overTime>0?'background:yellow;color:black':''" @mouseover.stop="getAbstractIdx([tableIdx,progressIdx,stuIdx])" @click="gotoEditOrder(stuItem.id)">
+          {{stuItem.stuName}}
+          <div class="detail-box" v-if="abstractIdx[0]===tableIdx && abstractIdx[1]===progressIdx && abstractIdx[2]===stuIdx" :style="'left:'+(mousePos[0]-240)+'px;top:'+mousePos[1]+'px'">
+            <div class="name-box">
+              <div>学生姓名: </div><div>{{stuItem.stuName}}</div>
             </div>
+            <div class="name-box">
+              <div>学习进度: </div><div>{{stuItem.progress}}/{{stuItem.maxProgress}}</div>
+            </div>
+            <div class="name-box">
+              <div>沟通时间: </div><div>{{stuItem.meetTime?stuItem.meetTime:'待定'}}</div>
+            </div>
+            <div v-if="stuItem.overTime>0" style="color: red">已超时{{stuItem.overTime/3600/1000/24}}天</div>
           </div>
         </div>
-        <div class="lower-box">
-          <div class="bar-item" v-for="(barItem, barIdx) in prepareArr[tableIdx]" :style="barItem.styleStr" @mouseover.stop="getPrepareDetailIdx([tableIdx, barIdx])" @click="openPeriodDetail([tableIdx, barIdx, 1])">
-            {{barItem.nameArr.length}}人 {{barItem.dayNum}}天
-            <div class="detail-box" v-if="showPrepareIdx[0]===tableIdx && showPrepareIdx[1]===barIdx" :style="'left:'+(mousePos[0]-240)+'px;top:'+mousePos[1]+'px'">
-              <div style="margin-bottom: 3px">{{barItem.startTimeStamp}} ~ {{barItem.endTimeStamp}}</div>
-              <div class="name-box" v-for="(nameItem, nameIdx) in barItem.nameArr">
-                <div>{{nameItem.split(' ')[0]}}</div>
-                <div>{{nameItem.split(' ')[1]}}</div>
-              </div>
+      </div>
+      <div class="single-box" style="justify-content: center">
+        <div class="btn stu-btn" v-if="progressArr[tableIdx][5].length" @mouseover.stop="getAbstractIdx([tableIdx,5,-1])" @click="openFinishList(tableIdx)">
+          {{progressArr[tableIdx][5].length}}人
+          <div class="detail-box" v-if="abstractIdx[0]===tableIdx && abstractIdx[1]===5" :style="'left:'+(mousePos[0]-240)+'px;top:'+mousePos[1]+'px'">
+            <div class="name-box" v-for="(finishItem,finishIdx) in progressArr[tableIdx][5]">
+              <div>{{finishItem.id}}</div><div>{{finishItem.stuName}}</div>
             </div>
           </div>
         </div>
@@ -90,17 +97,16 @@
   </transition>
 
   <transition name="showMask">
-    <div class="popup-bg" v-if="popupFlag.periodDetailWin" @click="closePeriodDetail()">
+    <div class="popup-bg" v-if="popupFlag.finishListWin" @click="closeFinishList()">
       <div class="mod-table-item-win" @click.stop>
-        <div class="sub-box" style="position:relative;" v-for="(periodDetailItem, periodDetailIdx) in (periodDetailIdx[2]===0?scheduleArr[periodDetailIdx[0]][periodDetailIdx[1]].nameArr:prepareArr[periodDetailIdx[0]][periodDetailIdx[1]].nameArr)">
-          <div class="left">{{periodDetailItem.split(' ')[0]}}</div>
-          <div class="right">{{periodDetailItem.split(' ')[1]}}</div>
-          <div class="btn" style="position: absolute;left: 50%" @click="gotoEditOrder(periodDetailItem.split(' ')[1])">去编辑</div>
+        <div class="sub-box" style="position:relative;" v-for="(finishItem,finishIdx) in progressArr[finishListIdx][5]">
+          <div class="left">{{finishItem.id}}</div>
+          <div class="right">{{finishItem.stuName}}</div>
+          <div class="btn" style="position: absolute;left: 50%" @click="gotoEditOrder(finishItem.id)">去编辑</div>
         </div>
       </div>
     </div>
   </transition>
-
 
 </div>
 </body>
@@ -109,5 +115,5 @@
 <script type="text/javascript" src="../../lib/base.js"></script>
 
 <script type="text/javascript" src="../data.js"></script>
-<script type="text/javascript" src="tutor_schedule.js"></script>
+<script type="text/javascript" src="stu_progress.js"></script>
 </html>
