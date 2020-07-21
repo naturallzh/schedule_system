@@ -123,6 +123,7 @@ let vm = new Vue({
 				[itemObj.tutorClass.length<1, '导师职位输入有误'],
 				[itemObj.recLetterState>3 && (itemObj.recTime.length<8), '签发时间输入有误'],
 				[itemObj.income<1 || isNaN(itemObj.income), '合作价格输入有误'],
+				[itemObj.recLetterState>3 && (itemObj.paymentState<1), '付款状态输入有误'],
 				[itemObj.cost<1 || isNaN(itemObj.cost), '支出输入有误'],
 			];
 			for (let i=0;i<checkPool.length;i++) {

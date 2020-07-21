@@ -120,7 +120,7 @@ let vm = new Vue({
 
 			for (let i=0;i<dataArr.length;i++) {
 				const tutorIdx = this.getTutorIdx(dataArr[i].tutorName);
-				if (dataArr[i].recLetterState === 4) {
+				if (dataArr[i].recLetterState === 4 && dataArr[i].paymentState===2) {
 					outputArr[tutorIdx][5].push(dataArr[i]);
 					continue;
 				}
@@ -158,6 +158,45 @@ let vm = new Vue({
 		},
 		timestampShift: function (timestamp, n) {
 			return this.dateObj2timestamp(this.dateObjShift(this.timestamp2dateObj(timestamp), n));
+		},
+
+		highLightBgStr: function (obj) {
+			if (obj.progress>=4 && obj.paymentState<=1 && obj.recLetterState>=4) {
+				return 'background:red;color:black';
+			}
+			else if (obj.overTime>0) {
+				return 'background:yellow;color:black';
+			}
+			else {return ''}
+		},
+
+		detailStrArr: function (obj) {
+			let strArr = [];
+			if (obj.progress<=3) {
+				strArr = [
+					{title: '学生姓名',value: obj.stuName, styleStr: ''},
+					{title: '学习进度',value: obj.progress+'/'+obj.maxProgress, styleStr: ''},
+					{title: '沟通时间',value: obj.meetTime?obj.meetTime:'待定', styleStr: ''},
+				];
+				if (obj.overTime>0) {
+					strArr.push({title: '已超时'+obj.overTime/3600/1000/24+'天',value: '', styleStr: 'color:red'},)
+				}
+			}
+			else {
+				strArr = [
+					{title: '学生姓名',value: obj.stuName, styleStr: ''},
+					{title: '推荐信',value: DATA_stateCol.recLetterState[obj.recLetterState], styleStr: ''},
+				];
+				if (obj.recLetterState>=4) {
+
+					strArr.push({title: '签发时间',value: obj.recTime, styleStr: ''},);
+					strArr.push({title: '付款状态',value: DATA_stateCol.paymentState[obj.paymentState], styleStr: ''},);
+					const n = (this.timestamp2dateObj(this.dateObj2timestamp(new Date())) - this.timestamp2dateObj(obj.recTime))/3600/1000/24;
+					strArr.push({title: '已签发'+n+'天',value: '', styleStr: 'color:red'},)
+				}
+			}
+
+			return strArr;
 		},
 
 		getAbstractIdx: function (arr) {

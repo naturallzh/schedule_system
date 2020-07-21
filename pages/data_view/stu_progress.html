@@ -51,19 +51,12 @@
       <div class="single-box" style="width: 110px">{{tableItem.coName}}</div>
       <div class="single-box" style="width: 180px">{{tableItem.tutorClass}}</div>
       <div class="single-box" v-for="(progressItem,progressIdx) in progressArr[tableIdx].slice(0,5)">
-        <div class="btn stu-btn" v-for="(stuItem,stuIdx) in progressItem" :style="stuItem.overTime>0?'background:yellow;color:black':''" @mouseover.stop="getAbstractIdx([tableIdx,progressIdx,stuIdx])" @click="gotoEditOrder(stuItem.id)">
+        <div class="btn stu-btn" v-for="(stuItem,stuIdx) in progressItem" :style="highLightBgStr(stuItem)" @mouseover.stop="getAbstractIdx([tableIdx,progressIdx,stuIdx])" @click="gotoEditOrder(stuItem.id)">
           {{stuItem.stuName}}
           <div class="detail-box" v-if="abstractIdx[0]===tableIdx && abstractIdx[1]===progressIdx && abstractIdx[2]===stuIdx" :style="'left:'+(mousePos[0]-240)+'px;top:'+mousePos[1]+'px'">
-            <div class="name-box">
-              <div>学生姓名: </div><div>{{stuItem.stuName}}</div>
+            <div class="name-box" v-for="(detailItem,detailIdx) in detailStrArr(stuItem)">
+              <div :style="detailItem.styleStr">{{detailItem.title}}</div><div>{{detailItem.value}}</div>
             </div>
-            <div class="name-box">
-              <div>学习进度: </div><div>{{stuItem.progress}}/{{stuItem.maxProgress}}</div>
-            </div>
-            <div class="name-box">
-              <div>沟通时间: </div><div>{{stuItem.meetTime?stuItem.meetTime:'待定'}}</div>
-            </div>
-            <div v-if="stuItem.overTime>0" style="color: red">已超时{{stuItem.overTime/3600/1000/24}}天</div>
           </div>
         </div>
       </div>
